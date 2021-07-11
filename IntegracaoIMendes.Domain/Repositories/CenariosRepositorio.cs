@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using IntegracaoIMendes.Domain.Entities.Infast;
-using IntegracaoIMendes.Domain.Enums;
+using IntegracaoIMendes.Domain.Mappings;
+using IntegracaoIMendes.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,26 +9,30 @@ using System.Linq;
 
 namespace IntegracaoIMendes.Domain.Repositories
 {
-    public class CenariosRepositorio : Repository
+    public class CenariosRepositorio 
     {
         private readonly DataContext.InfastDataContext _context;
+        private CenariosMapping _mapp;
 
         public CenariosRepositorio(DataContext.InfastDataContext context)
         {
             _context = context;
+            _mapp = new CenariosMapping();
         }
 
         public IEnumerable<Cenarios> CarregarListaCenarios()
         {
-            return _context
+            List<Cenarios> listaCenarios = new List<Cenarios>();
+
+            List<CenariosModelo> listaCenariosModel =  _context
                 .Connection
-                .Query<Cenarios>(
+                .Query<CenariosModelo>(
                             "Select IMC_ID ID, " +
                             "IMC_UfCliente UfCliente, " +
                             "IMC_CFOP CFOP, " +
                             "IMC_CodRegimeTributario CodRegimeTributario, " +
                             "IMC_RegimeTributario RegimeTributario, " +
-                            "IMC_Finalidade Finalidade, " +
+                            "IMC_Finalidade Finalidades, " +
                             "IMC_CaracteristicasTributarias CaracteristicasTributarias, " +
                             "IMC_UFs UFs, " +
                             "IMC_Inativo Inativo, " +
@@ -37,20 +42,28 @@ namespace IntegracaoIMendes.Domain.Repositories
                             "From Tb_IMendes_Cenarios " +
                             "Where IMC_Inativo = 0 " + 
                             "Order By IMC_ID",
-            commandType: CommandType.Text);
+            commandType: CommandType.Text).ToList();
+
+            if (listaCenariosModel.Count > 0)
+            {
+                foreach (CenariosModelo cenarioModel in listaCenariosModel)
+                    listaCenarios.Add(_mapp.Mapp(cenarioModel));
+            }
+
+            return listaCenarios;
         }
 
         public Cenarios CarregarCenario(Int64 Id)
         {
-            return _context
+            CenariosModelo cenarioModel = _context
                 .Connection
-                .QueryFirst<Cenarios>(
+                .QueryFirst<CenariosModelo>(
                             "Select IMC_ID ID, " +
                             "IMC_UfCliente UfCliente, " +
                             "IMC_CFOP CFOP, " +
                             "IMC_CodRegimeTributario CodRegimeTributario, " +
                             "IMC_RegimeTributario RegimeTributario, " +
-                            "IMC_Finalidade Finalidade, " +
+                            "IMC_Finalidade Finalidades, " +
                             "IMC_CaracteristicasTributarias CaracteristicasTributarias, " +
                             "IMC_UFs UFs, " +
                             "IMC_Inativo Inativo, " +
@@ -61,6 +74,8 @@ namespace IntegracaoIMendes.Domain.Repositories
                             "Where IMC_ID = " + Id.ToString() + " " +
                             "Order By IMC_ID",
                     commandType: CommandType.Text);
+
+            return _mapp.Mapp(cenarioModel);
         }
 
         public Int64 IncluirCenario(Cenarios cenario)
@@ -83,39 +98,13 @@ namespace IntegracaoIMendes.Domain.Repositories
                                     "@CaracteristicasTributarias, " +
                                     "@UFs, " +
                                     "@CFOP, " +
-                                    "@Finalidade, " +
+                                    "@Finalidades, " +
                                     "@Inativo, " +
                                     "@TipoProduto, " +
-                                    "@IntervalorDeBuscaEmDias); " +
+                                    "@IntervaloDeBuscaEmDias); " +
                                     "SELECT CAST(SCOPE_IDENTITY() as BIGINT);";
 
-            return Int64.Parse(_context.Connection.ExecuteScalar(insertCenario,
-                new
-                {
-                    UfCliente = cenario.UfCliente,
-                    CodRegimeTributario = cenario.CodRegimeTributario,
-                    RegimeTributario = cenario.RegimeTributario,
-                    CaracteristicasTributarias = cenario.CaracteristicasTributarias,
-                    UFs = "",
-                    CFOP = cenario.CFOP,
-                    Finalidade = "",
-                    Inativo = cenario.Inativo,
-                    TipoProduto = cenario.TipoProduto,
-                    IntervalorDeBuscaEmDias = cenario.IntervaloDeBuscaEmDias
-                }
-            ).ToString());
-        }
-
-        private string RetornarStringCaracteristicasTributarias(List<ECaracteristicaTributaria> listaCaracteristiscas)
-        {
-            string strCaracateristicas = "";
-
-            foreach (ECaracteristicaTributaria caracteristica in listaCaracteristiscas)
-                strCaracateristicas += caracteristica.ToString();
-
-
-            return strCaracateristicas;
-
+            return Int64.Parse(_context.Connection.ExecuteScalar(insertCenario, _mapp.Mapp(cenario)).ToString()); 
         }
 
         public Int64 AlterarCenario(Cenarios cenario)
@@ -127,43 +116,14 @@ namespace IntegracaoIMendes.Domain.Repositories
                                     "IMC_CaracteristicasTributarias = @CaracteristicasTributarias, " +
                                     "IMC_UFs = @UFs, " +
                                     "IMC_CFOP = @CFOP, " +
-                                    "IMC_Finalidade = @Finalidade, " +
+                                    "IMC_Finalidade = @Finalidades, " +
                                     "IMC_Inativo = @Inativo, " +
                                     "IMC_TipoProduto = @TipoProduto, " +
                                     "IMC_IntervaloDeBuscaEmDias = @IntervaloDeBuscaEmDias, " +
                                     "IMC_DataHoraUltimoProcessamento = @DataHoraUltimoProcessamento " +
                                     "Where IMC_ID = " + cenario.ID.ToString();
 
-            return _context.Connection.Execute(updateCenario, cenario);
-        }
-
-        private List<EFinalidade> RetornarListaFinalidades(string stringFinalidades)
-        {
-            List<EFinalidade> finalidades = new List<EFinalidade>();
-
-            List<string> strFinalidades = stringFinalidades.Split(',').ToList();
-
-            foreach (string caract in strFinalidades)
-                finalidades.Add((EFinalidade)int.Parse(caract));
-
-            return finalidades;
-        }
-
-        private List<string> RetornarListaUFs(string stringUFs)
-        {
-            return stringUFs.Split(',').ToList();
-        }
-
-        private List<ECaracteristicaTributaria> RetornarListaCaracteristicas(string stringCaracteristicas)
-        {
-            List<ECaracteristicaTributaria> caracteristicas = new List<ECaracteristicaTributaria>();
-
-            List<string> strCaracteristicas = stringCaracteristicas.Split(',').ToList();
-
-            foreach (string caract in strCaracteristicas)
-                caracteristicas.Add((ECaracteristicaTributaria)int.Parse(caract));
-
-            return caracteristicas;
+            return _context.Connection.Execute(updateCenario, _mapp.Mapp(cenario));
         }
     }
 }

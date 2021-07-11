@@ -8,16 +8,18 @@ using IntegracaoIMendes.Domain.Repositories;
 
 namespace IntegracaoIMendes.Domain.Handlers.Infast
 {
-    public class ProcessamentoTributosHandler
+    public class ProcessamentoCenariosHandler
     {
         private DataContext.InfastDataContext _context;
+        private ProcessamentoCenariosRepositorio _repositorio;
         private Configuracoes _config;
 
-        public ProcessamentoTributosHandler(DataContext.InfastDataContext context,
+        public ProcessamentoCenariosHandler(DataContext.InfastDataContext context,
                                             Configuracoes config)
         {
             _context = context;
             _config = config;
+            _repositorio = new ProcessamentoCenariosRepositorio(_context);
         }
 
         public void ProcessarTributos(IEnumerable<Cenarios> listaCenariosIMendes, List<Produtos> produtosInfast)
@@ -34,6 +36,8 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
 
         public void ProcessarTributosCenario(Cenarios cenario, List<Produtos> listaProdutos)
         {
+            int qtdRequisicoes = 0;
+
             if (listaProdutos.Count > 0)
             {
                 foreach (EFinalidade finalidade in cenario.Finalidades)
@@ -65,6 +69,7 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
                         {
                             ProcessarTributosCenarioFinalidadeOrigem(cenario, finalidade, origemMercadoria, listaBuscaIMendes);
 
+                            qtdRequisicoes++;
                             contador = 0;
                             listaBuscaIMendes.Clear();
                         }
@@ -73,11 +78,21 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
                     }
 
                     if (listaBuscaIMendes.Count > 0)
+                    {
                         ProcessarTributosCenarioFinalidadeOrigem(cenario, finalidade, origemMercadoria, listaBuscaIMendes);
+                        qtdRequisicoes++;
+                    }
                 }
+
+                CriarLogProcessamentoCenario(cenario, listaProdutos, qtdRequisicoes, "");
 
                 AtualizarDataProcessamentoCenario(cenario);
             }
+        }
+
+        private void ValidarDisponibilidadeRequisicoes(Cenarios cenario, List<Produtos> listaProdutos)
+        {
+            
         }
 
       
@@ -114,5 +129,26 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
 
             cenariosHandler.AtualizarDataProcessamentoCenario(cenario.ID);
         }
+
+        private void CriarLogProcessamentoCenario(Cenarios cenario, List<Produtos> listaProdutos, int qtdRequisicoesRealizadas, string mensagem)
+        {
+            ProcessamentoCenarios logProcessamento = new ProcessamentoCenarios();
+
+            logProcessamento.EmpresaID = 1;
+            logProcessamento.FilialID = 1;
+            logProcessamento.Data = System.DateTime.Now;
+            logProcessamento.CenarioID = cenario.ID;
+            logProcessamento.Finalidades = cenario.Finalidades;
+            logProcessamento.CaracteristicasTributarias = cenario.CaracteristicasTributarias;
+            logProcessamento.UFs = cenario.UFs;
+            logProcessamento.QtdProdutos = listaProdutos.Count;
+            logProcessamento.QtdOrigensProdutos = listaProdutos.Select(x => x.origemMercadoria).Distinct().Count();
+            logProcessamento.QtdRequisicoesRealizadas = qtdRequisicoesRealizadas;
+            logProcessamento.Mensagem = mensagem;
+
+            _repositorio.IncluirProcessamentoCenario(logProcessamento);
+        }
+
+
     }
 }

@@ -14,10 +14,10 @@ namespace IntegracaoIMendes.Domain.Entities.Infast
         public List<EFinalidade> Finalidades { get; set; }
         public List<ECaracteristicaTributaria> CaracteristicasTributarias { get; set; }
         public List<string> UFs { get; set; }
-        public bool Inativo { get; private set; }
+        public bool Inativo { get; set; }
         public string TipoProduto { get; set; }
         public Int16 IntervaloDeBuscaEmDias { get; set; }
-        public DateTime DataHoraUltimoProcessamento { get; private set; }
+        public DateTime DataHoraUltimoProcessamento { get; set; }
 
         public override void Validar()
         {

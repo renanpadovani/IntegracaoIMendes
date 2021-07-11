@@ -27,7 +27,8 @@ namespace IntegracaoIMendes.Domain.Repositories
                         "IMN_CnpjCliente CnpjCliente, " +
                         "IMN_QtdProdutosPorRequisicao QtdProdutosPorRequisicao, " +
                         "IMN_QtdUFsporRequisicao QtdUFsPorRequisicao, " +
-                        "IMN_QtdCaracteristicasTributariasPorRequisicao QtdCaracteristicasTributariasPorRequisicao " +
+                        "IMN_QtdCaracteristicasTributariasPorRequisicao QtdCaracteristicasTributariasPorRequisicao, " +
+                        "IMN_QtdRequisicoesDiarias QtdRequisicoesDiarias " +
                         "From Tb_IMendes_Configuracoes",
                         commandType: CommandType.Text)
                     .FirstOrDefault();
@@ -46,7 +47,8 @@ namespace IntegracaoIMendes.Domain.Repositories
                                     "IMN_CnpjCliente, " +
                                     "IMN_QtdProdutosPorRequisicao, " +
                                     "IMN_QtdUFsporRequisicao, " +
-                                    "IMN_QtdCaracteristicasTributariasPorRequisicao) " +
+                                    "IMN_QtdCaracteristicasTributariasPorRequisicao, " +
+                                    "IMN_QtdRequisicoesDiarias) " +
                                     "Values " +
                                     "(@Login, " +
                                     "@Senha, " +
@@ -54,7 +56,8 @@ namespace IntegracaoIMendes.Domain.Repositories
                                     "@CnpjCliente, " +
                                     "@QtdProdutosPorRequisicao, " +
                                     "@QtdUFsporRequisicao, " +
-                                    "@QtdCaracteristicasTributariasPorRequisicao); " +
+                                    "@QtdCaracteristicasTributariasPorRequisicao, " +
+                                    "@QtdRequisicoesDiarias); " +
                                     "SELECT CAST(SCOPE_IDENTITY() as BIGINT);";
 
             return Int64.Parse(_context.Connection.ExecuteScalar(insertConfig, config).ToString());

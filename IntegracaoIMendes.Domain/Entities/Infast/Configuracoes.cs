@@ -13,5 +13,6 @@ namespace IntegracaoIMendes.Domain.Entities.Infast
         public int QtdProdutosPorRequisicao { get; set; }
         public int QtdUFsporRequisicao { get; set; }
         public int QtdCaracteristicasTributariasPorRequisicao { get; set; }
+        public int QtdRequisicoesDiarias { get; set; }
     }
 }

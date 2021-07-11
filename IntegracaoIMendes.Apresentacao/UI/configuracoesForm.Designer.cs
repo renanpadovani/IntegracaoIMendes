@@ -45,14 +45,19 @@ namespace IntegracaoIMendes.Apresentacao.UI
             this.senhaIMendestextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.loginIMendestextBox = new System.Windows.Forms.TextBox();
+            this.qtdDiariaRequisicoesIMendesnumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qtdUfsPorRequisicaonumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qtdProdutosPorRequisicaonumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdDiariaRequisicoesIMendesnumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.qtdDiariaRequisicoesIMendesnumericUpDown);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown);
             this.groupBox1.Controls.Add(this.qtdUfsPorRequisicaonumericUpDown);
             this.groupBox1.Controls.Add(this.qtdProdutosPorRequisicaonumericUpDown);
@@ -77,7 +82,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
             // 
             // qtdCaracteristicasTributariasPorRequisicaonumericUpDown
             // 
-            this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown.Location = new System.Drawing.Point(6, 241);
+            this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown.Location = new System.Drawing.Point(182, 193);
             this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown.Name = "qtdCaracteristicasTributariasPorRequisicaonumericUpDown";
             this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown.Size = new System.Drawing.Size(170, 23);
             this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown.TabIndex = 19;
@@ -91,7 +96,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
             // 
             // qtdProdutosPorRequisicaonumericUpDown
             // 
-            this.qtdProdutosPorRequisicaonumericUpDown.Location = new System.Drawing.Point(6, 144);
+            this.qtdProdutosPorRequisicaonumericUpDown.Location = new System.Drawing.Point(182, 147);
             this.qtdProdutosPorRequisicaonumericUpDown.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -119,7 +124,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 223);
+            this.label7.Location = new System.Drawing.Point(182, 175);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(179, 15);
             this.label7.TabIndex = 13;
@@ -137,7 +142,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 126);
+            this.label5.Location = new System.Drawing.Point(182, 129);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(165, 15);
             this.label5.TabIndex = 9;
@@ -213,6 +218,32 @@ namespace IntegracaoIMendes.Apresentacao.UI
             this.loginIMendestextBox.Size = new System.Drawing.Size(170, 23);
             this.loginIMendestextBox.TabIndex = 0;
             // 
+            // qtdDiariaRequisicoesIMendesnumericUpDown
+            // 
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.Location = new System.Drawing.Point(6, 147);
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.Name = "qtdDiariaRequisicoesIMendesnumericUpDown";
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.Size = new System.Drawing.Size(170, 23);
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.TabIndex = 21;
+            this.qtdDiariaRequisicoesIMendesnumericUpDown.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 129);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(176, 15);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "Qtd. Diária Requisições IMendes";
+            // 
             // configuracoesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -232,6 +263,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
             ((System.ComponentModel.ISupportInitialize)(this.qtdCaracteristicasTributariasPorRequisicaonumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qtdUfsPorRequisicaonumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qtdProdutosPorRequisicaonumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdDiariaRequisicoesIMendesnumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -254,5 +286,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
         private System.Windows.Forms.NumericUpDown qtdCaracteristicasTributariasPorRequisicaonumericUpDown;
         private System.Windows.Forms.NumericUpDown qtdUfsPorRequisicaonumericUpDown;
         private System.Windows.Forms.NumericUpDown qtdProdutosPorRequisicaonumericUpDown;
+        private System.Windows.Forms.NumericUpDown qtdDiariaRequisicoesIMendesnumericUpDown;
+        private System.Windows.Forms.Label label8;
     }
 }

@@ -53,6 +53,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
                 senhaIMendestextBox.Text = config.Senha;
                 ambientecomboBox.SelectedValue = ((int)config.Ambiente).ToString();
                 cnpjClientetextBox.Text = config.CnpjCliente;
+                qtdDiariaRequisicoesIMendesnumericUpDown.Value = config.QtdRequisicoesDiarias;
                 qtdProdutosPorRequisicaonumericUpDown.Value = config.QtdProdutosPorRequisicao;
                 qtdUfsPorRequisicaonumericUpDown.Value = config.QtdUFsporRequisicao;
                 qtdCaracteristicasTributariasPorRequisicaonumericUpDown.Value = config.QtdCaracteristicasTributariasPorRequisicao;
@@ -67,6 +68,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
                 string senhaIMendes = "";
                 EAmbiente ambiente = EAmbiente.Homologacao;
                 string cnpjCliente = "";
+                int qtdRequisicoesDiariasIMendes = 0;
                 int qtdProdutosPorRequisicao = 0;
                 int qtdUFsPorRequisicao = 0;
                 int qtdCaracteristicasTributariasPorRequisicao = 0;
@@ -103,6 +105,14 @@ namespace IntegracaoIMendes.Apresentacao.UI
                 else
                     cnpjCliente = cnpjClientetextBox.Text;
 
+                if (qtdDiariaRequisicoesIMendesnumericUpDown.Value == 0)
+                {
+                    MessageBox.Show("Atenção: Quantidade de requisições diárias ao servidor IMendes não pode ser zero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                else
+                    qtdRequisicoesDiariasIMendes = int.Parse(qtdDiariaRequisicoesIMendesnumericUpDown.Text);
+
                 if (qtdProdutosPorRequisicaonumericUpDown.Value == 0)
                 {
                     MessageBox.Show("Atenção: Quantidade de produtos por requisição não pode ser zero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -133,6 +143,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
                                                     senhaIMendes,
                                                     ambiente,
                                                     cnpjCliente,
+                                                    qtdRequisicoesDiariasIMendes,
                                                     qtdProdutosPorRequisicao,
                                                     qtdUFsPorRequisicao,
                                                     qtdCaracteristicasTributariasPorRequisicao);

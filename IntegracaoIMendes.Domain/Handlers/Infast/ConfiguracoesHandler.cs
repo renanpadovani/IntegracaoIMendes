@@ -1,11 +1,6 @@
 ﻿using IntegracaoIMendes.Domain.Entities.Infast;
 using IntegracaoIMendes.Domain.Enums;
 using IntegracaoIMendes.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegracaoIMendes.Domain.Handlers.Infast
 {
@@ -27,6 +22,7 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
                                                 string senhaIMendes,
                                                 EAmbiente ambiente,
                                                 string cnpjCliente,
+                                                int qtdRequisicoesDiariasIMendes,
                                                 int qtdProdutosPorRequisicao,
                                                 int qtdUFsporRequisicao,
                                                 int qtdCaracteristicasTributariasPorRequisicao)
@@ -37,6 +33,7 @@ namespace IntegracaoIMendes.Domain.Handlers.Infast
             config.Senha = senhaIMendes;
             config.Ambiente = ambiente;
             config.CnpjCliente = cnpjCliente;
+            config.QtdRequisicoesDiarias = qtdRequisicoesDiariasIMendes;
             config.QtdProdutosPorRequisicao = qtdProdutosPorRequisicao;
             config.QtdUFsporRequisicao = qtdUFsporRequisicao;
             config.QtdCaracteristicasTributariasPorRequisicao = qtdCaracteristicasTributariasPorRequisicao;

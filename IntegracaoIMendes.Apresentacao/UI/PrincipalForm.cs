@@ -13,7 +13,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
     public partial class PrincipalForm : Form
     {
         Domain.DataContext.InfastDataContext _context;
-        ProcessamentoTributosHandler _processamentoTributosHandler;
+        ProcessamentoCenariosHandler _processamentoTributosHandler;
 
         public PrincipalForm()
         {
@@ -53,7 +53,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
 
         private void processarTributosbutton_Click(object sender, EventArgs e)
         {
-            _processamentoTributosHandler = new ProcessamentoTributosHandler(_context, CarregarConfiguracaoIMendes());
+            _processamentoTributosHandler = new ProcessamentoCenariosHandler(_context, CarregarConfiguracaoIMendes());
 
             IEnumerable<Cenarios> listaCenariosIMendes = CarregarCenariosIMendes();
 
@@ -75,7 +75,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
 
             logIntegracaotimer.Enabled = true;
 
-            _processamentoTributosHandler = new ProcessamentoTributosHandler(_context, CarregarConfiguracaoIMendes());
+            _processamentoTributosHandler = new ProcessamentoCenariosHandler(_context, CarregarConfiguracaoIMendes());
 
             _processamentoTributosHandler.ProcessarTributos(CarregarCenariosIMendes(), CarregarProdutosParaIntegracao());
         }

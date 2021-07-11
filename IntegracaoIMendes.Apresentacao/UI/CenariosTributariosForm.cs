@@ -35,7 +35,7 @@ namespace IntegracaoIMendes.Apresentacao.UI
 
             CarregarListBoxUFsDestino();
 
-          //  CarregarGridCenarios();
+            CarregarGridCenarios();
         }
 
         private void CarregarComboRegimeTributario()
