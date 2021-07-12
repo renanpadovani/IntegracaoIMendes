@@ -20,18 +20,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Formularios\CenariosTributariosForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\ConfiguracoesBDForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\ConfiguracoesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\PrincipalForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Formularios\CenariosTributariosForm.cs" />
+    <Compile Update="Formularios\ConfiguracoesBDForm.cs" />
+    <Compile Update="Formularios\ConfiguracoesForm.cs" />
+    <Compile Update="Formularios\PrincipalForm.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IntegracaoIMendes.Domain\IntegracaoIMendes.Dominio.csproj" />
+    <ProjectReference Include="..\IntegracaoIMendes.Dominio\IntegracaoIMendes.Dominio.csproj" />
   </ItemGroup>
 
 </Project>
