@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Apresentacao", "IntegracaoIMendes.Apresentacao\IntegracaoIMendes.Apresentacao.csproj", "{59E7FF9C-BB2D-4E34-A49F-2FEF1B3CE987}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Domain", "IntegracaoIMendes.Domain\IntegracaoIMendes.Domain.csproj", "{2F2B012E-4E2D-48B8-98DD-C4F14AD75C6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Dominio", "IntegracaoIMendes.Domain\IntegracaoIMendes.Dominio.csproj", "{2F2B012E-4E2D-48B8-98DD-C4F14AD75C6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,13 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <StartupObject>IntegracaoIMendes.Apresentacao.Program</StartupObject>
-    <AssemblyName>IntegracaoIMendes</AssemblyName>
-    <ApplicationIcon>imendes.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
+    <StartupObject />
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <Compile Remove="UI\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <EmbeddedResource Remove="UI\**" />
+    <None Remove="Resources\**" />
+    <None Remove="UI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <Compile Remove="Servicos\ConnectionDbService.cs" />
+    <Compile Remove="Settings.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="microsoft.data.sqlclient" Version="3.0.0" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -19,18 +39,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Formularios\CenariosTributariosForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\ConfiguracoesBDForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\ConfiguracoesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Formularios\PrincipalForm.cs">
-      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 
@@ -46,10 +54,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\IntegracaoIMendes.Domain\IntegracaoIMendes.Dominio.csproj" />
   </ItemGroup>
 
 </Project>

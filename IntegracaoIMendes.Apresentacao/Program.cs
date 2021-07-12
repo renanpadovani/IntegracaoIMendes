@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Forms;
-using IntegracaoIMendes.Apresentacao.UI;
+using IntegracaoIMendes.Apresentacao.Formularios;
 
 namespace IntegracaoIMendes.Apresentacao
 {
