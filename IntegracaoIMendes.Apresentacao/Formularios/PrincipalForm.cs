@@ -34,7 +34,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private void CarregarCredenciaisBancoDeDados()
         {
-            ConnectionDbServico.CarregarCredenciais();
+            ConexaoBDServico.CarregarCredenciais();
 
             if (Properties.Settings.Default.Server == null || Properties.Settings.Default.Server.ToString().Length == 0)
             {

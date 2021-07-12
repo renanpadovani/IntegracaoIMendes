@@ -5,7 +5,7 @@ using IntegracaoIMendes.Apresentacao.Entidades;
 
 namespace IntegracaoIMendes.Apresentacao.Servicos
 {
-    public static class ConnectionDbServico
+    public static class ConexaoBDServico
     {
         public static void CarregarCredenciais()
         {
