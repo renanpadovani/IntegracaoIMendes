@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace IntegracaoIMendes.Dominio.Entidades.Infast
 {
     public class Cenarios : Entidade

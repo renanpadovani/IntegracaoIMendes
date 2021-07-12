@@ -20,7 +20,15 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
 
         public IEnumerable<Produtos> PesquisarProdutos(Int64 produtoId = 0, string tipoClassificacao = "")
         {
-            return _produtoRepositorio.PesquisarProdutos(produtoId, tipoClassificacao).OrderBy(o => o.origemMercadoria);
+            try
+            {
+                return _produtoRepositorio.PesquisarProdutos(produtoId, tipoClassificacao).OrderBy(o => o.origemMercadoria);
+            }
+            catch (Exception)
+            {
+                IEnumerable<Produtos> empty = Enumerable.Empty<Produtos>();
+                return empty;
+            }
         }
     }
 }

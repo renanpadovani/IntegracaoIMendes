@@ -37,22 +37,24 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.credenciaisBancoDeDadosINFASTERPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configuraçõesIMendesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cenáriosTributáriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.logIntegracaolistBox = new System.Windows.Forms.ListBox();
+            this.integracaotimer = new System.Windows.Forms.Timer(this.components);
+            this.integracaobackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusIntegracaotoolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.logIntegracaotimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // processarTributosbutton
             // 
-            this.processarTributosbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.processarTributosbutton.Image = global::IntegracaoIMendes.Apresentacao.Properties.Resources.start64;
             this.processarTributosbutton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.processarTributosbutton.Location = new System.Drawing.Point(12, 271);
+            this.processarTributosbutton.Location = new System.Drawing.Point(153, 75);
             this.processarTributosbutton.Name = "processarTributosbutton";
-            this.processarTributosbutton.Size = new System.Drawing.Size(166, 41);
+            this.processarTributosbutton.Size = new System.Drawing.Size(179, 48);
             this.processarTributosbutton.TabIndex = 0;
-            this.processarTributosbutton.Text = "            Iniciar Integração";
+            this.processarTributosbutton.Text = "            Forçar Integração";
             this.processarTributosbutton.UseVisualStyleBackColor = true;
             this.processarTributosbutton.Click += new System.EventHandler(this.processarTributosbutton_Click);
             // 
@@ -62,7 +64,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.menuToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(744, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(478, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -97,26 +99,30 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.cenáriosTributáriosToolStripMenuItem.Text = "Cenários Tributários";
             this.cenáriosTributáriosToolStripMenuItem.Click += new System.EventHandler(this.cenáriosTributáriosToolStripMenuItem_Click);
             // 
-            // label1
+            // integracaotimer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 15);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Log Integração:";
+            this.integracaotimer.Interval = 30000;
+            this.integracaotimer.Tick += new System.EventHandler(this.integracaotimer_Tick);
             // 
-            // logIntegracaolistBox
+            // integracaobackgroundWorker
             // 
-            this.logIntegracaolistBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.logIntegracaolistBox.FormattingEnabled = true;
-            this.logIntegracaolistBox.ItemHeight = 15;
-            this.logIntegracaolistBox.Location = new System.Drawing.Point(12, 57);
-            this.logIntegracaolistBox.Name = "logIntegracaolistBox";
-            this.logIntegracaolistBox.Size = new System.Drawing.Size(720, 199);
-            this.logIntegracaolistBox.TabIndex = 7;
+            this.integracaobackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.integracaobackgroundWorker_DoWork);
+            this.integracaobackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.integracaobackgroundWorker_RunWorkerCompleted);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusIntegracaotoolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 164);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(478, 22);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // statusIntegracaotoolStripStatusLabel
+            // 
+            this.statusIntegracaotoolStripStatusLabel.Name = "statusIntegracaotoolStripStatusLabel";
+            this.statusIntegracaotoolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // logIntegracaotimer
             // 
@@ -128,19 +134,22 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(744, 326);
-            this.Controls.Add(this.logIntegracaolistBox);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(478, 186);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.processarTributosbutton);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "PrincipalForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Integração IMendes";
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,8 +163,10 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
         private System.Windows.Forms.ToolStripMenuItem credenciaisBancoDeDadosINFASTERPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configuraçõesIMendesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cenáriosTributáriosToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox logIntegracaolistBox;
+        private System.Windows.Forms.Timer integracaotimer;
+        private System.ComponentModel.BackgroundWorker integracaobackgroundWorker;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel statusIntegracaotoolStripStatusLabel;
         private System.Windows.Forms.Timer logIntegracaotimer;
     }
 }

@@ -112,6 +112,8 @@ namespace IntegracaoIMendes.Dominio.Entidades.IMendes
         public Cabecalho Cabecalho { get; set; }
         public List<Grupos> Grupos { get; set; }
         public List<NaoEncontrado> SemRetorno { get; set; }
+        public bool ErroRetorno { get; set; }
+        public string MensagemErro { get; set; }
     }
 
 }

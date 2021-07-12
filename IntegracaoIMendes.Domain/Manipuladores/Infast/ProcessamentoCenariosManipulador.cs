@@ -28,7 +28,19 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
         {
             IEnumerable<Cenarios> listaCenariosIMendes = CarregarCenariosIMendes().OrderBy(x => x.DataHoraUltimoProcessamento);
 
+            if (listaCenariosIMendes.Count<Cenarios>() == 0)
+            {
+                CriarLogProcessamentoCenario(null, null, 0, "Nenhum cenário localizado para integração.");
+                return;
+            }
+
             List<Produtos> listaProdutos = CarregarProdutosParaIntegracao();
+
+            if (listaProdutos.Count == 0)
+            {
+                CriarLogProcessamentoCenario(null, listaProdutos, 0, "Nenhum produto localizado para integração.");
+                return;
+            }
 
             foreach (Cenarios cenario in listaCenariosIMendes)
             {
@@ -41,23 +53,39 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
                     if (numeroRequisicoesDisponiveis > numeroRequicoesEstimadas)
                         ProcessarCenario(cenario, listaProdutos);
                     else
-                        CriarLogProcessamentoCenario(cenario, listaProdutos, 0, "Número de requisições necessárias (" + numeroRequicoesEstimadas.ToString() + ") inferior ao total de requisições disponíveis (" + numeroRequisicoesDisponiveis.ToString() + ").");
+                        CriarLogProcessamentoCenario(cenario, listaProdutos, 0, "Número de requisições necessárias (" + numeroRequicoesEstimadas.ToString() + ") superior ao total de requisições disponíveis (" + numeroRequisicoesDisponiveis.ToString() + ").");
                 }
-            }
+            }  
         }
 
         private IEnumerable<Cenarios> CarregarCenariosIMendes()
         {
-            CenariosManipulador cenariosManipulador = new CenariosManipulador(_contexto);
+            try
+            {
+                CenariosManipulador cenariosManipulador = new CenariosManipulador(_contexto);
 
-            return cenariosManipulador.CarregarListaCenarios();
+                return cenariosManipulador.CarregarListaCenarios();
+            }
+            catch (Exception)
+            {
+                IEnumerable<Cenarios> empty = Enumerable.Empty<Cenarios>();
+                return empty;
+            }
         }
 
         private List<Produtos> CarregarProdutosParaIntegracao(Int64 produtoId = 0, string tipoClassificacaoProdutos = "")
         {
-            ProdutosManipulador produtosInfastManipulador = new ProdutosManipulador(_contexto);
+            try
+            {
+                ProdutosManipulador produtosInfastManipulador = new ProdutosManipulador(_contexto);
 
-            return produtosInfastManipulador.PesquisarProdutos(produtoId, tipoClassificacaoProdutos).ToList();
+                return produtosInfastManipulador.PesquisarProdutos(produtoId, tipoClassificacaoProdutos).ToList();
+            }
+            catch (Exception)
+            {
+                List<Produtos> empty = new List<Produtos>();
+                return empty;
+            }
         }
 
         public Int64 RetornarNumeroRequisicoesIMendesEstimadasParaProcessamentoCenario(Cenarios cenario, List<Produtos> listaProdutos)
@@ -149,9 +177,19 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
                                                     origemMercadoria,
                                                     listaProdutos);
 
-            //Grava os produtos no Infast
-            TributacoesInfastManipulador tributacaoInfastManipulador = new TributacoesInfastManipulador(_contexto);
-            tributacaoInfastManipulador.GravarTributos(cenario.ID, tribRet, listaProdutos);
+            if (tribRet.ErroRetorno == false)
+            {
+                //Grava os produtos no Infast
+                TributacoesInfastManipulador tributacaoInfastManipulador = new TributacoesInfastManipulador(_contexto);
+                tributacaoInfastManipulador.GravarTributos(cenario.ID, tribRet, listaProdutos);
+            }
+            else
+            {
+                CriarLogProcessamentoCenario(cenario, 
+                                             listaProdutos, 
+                                             0, 
+                                             "Erro ao Processar Cenário: " + cenario.ID.ToString() + " - Finalidade: " + finalidade.ToString() + " - Origem Produtos: " + origemMercadoria.ToString() + ": " + tribRet.MensagemErro);
+            }
         }
 
         private void AtualizarDataProcessamentoCenario(Cenarios cenario)

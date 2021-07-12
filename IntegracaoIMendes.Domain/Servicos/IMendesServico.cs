@@ -17,20 +17,42 @@ namespace IntegracaoIMendes.Dominio.Servicos
 
         public TributosRetorno PesquisarTributos(TributosRequisicao productRequest)
         {
-            var client = new RestClient("http://consultatributos.com.br:8080/api/v3/public/SaneamentoGrades");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("login", _login);
-            request.AddHeader("senha", _password);
-            request.AddHeader("Content-Type", "application/json");
+            TributosRetorno retornoIMendes = new TributosRetorno();
 
-            string jsonString = JsonSerializer.Serialize(productRequest);
+            try
+            {
+                var client = new RestClient("http://consultatributos.com.br:8080/api/v3/public/SaneamentoGrades");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("login", _login);
+                request.AddHeader("senha", _password);
+                request.AddHeader("Content-Type", "application/json");
 
-            request.AddParameter("application/json", jsonString, ParameterType.RequestBody);
+                string jsonString = JsonSerializer.Serialize(productRequest);
 
-            IRestResponse response = client.Execute(request);
+                request.AddParameter("application/json", jsonString, ParameterType.RequestBody);
 
-            return JsonSerializer.Deserialize<TributosRetorno>(response.Content);
+                IRestResponse response = client.Execute(request);
+
+                retornoIMendes = JsonSerializer.Deserialize<TributosRetorno>(response.Content);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    retornoIMendes.ErroRetorno = false;
+                }
+                else
+                {
+                    retornoIMendes.ErroRetorno = true;
+                    retornoIMendes.MensagemErro = "Error Message: " + response.ErrorMessage + " - Content/Type: " + response.Content.ToString();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                retornoIMendes.ErroRetorno = true;
+                retornoIMendes.MensagemErro = ex.Message;
+            }
+
+            return retornoIMendes;
         }
     }
 }
