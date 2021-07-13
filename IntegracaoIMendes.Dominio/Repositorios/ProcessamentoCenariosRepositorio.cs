@@ -2,13 +2,14 @@
 using IntegracaoIMendes.Dominio.ContextoDados;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Mapeamentos;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Data;
 using System.Linq;
 
 namespace IntegracaoIMendes.Dominio.Repositorios
 {
-    public class ProcessamentoCenariosRepositorio
+    public class ProcessamentoCenariosRepositorio : IProcessamentoCenariosRepositorio
     {
         private readonly InfastContextoDados _contexto;
         private ProcessamentoCenariosMapeamento _mapp;

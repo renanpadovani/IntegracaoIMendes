@@ -2,6 +2,7 @@
 using IntegracaoIMendes.Dominio.Entidades.IMendes;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Repositorios;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -9,14 +10,12 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
 {
     public class TributacoesInfastManipulador
     {
-        private readonly InfastContextoDados _contexto;
-        private TributacoesRepositorio _repositorio;
+        private ITributacoesRepositorio _repositorio;
         private List<Produtos> _listaProdutos;
 
-        public TributacoesInfastManipulador(InfastContextoDados contexto)
+        public TributacoesInfastManipulador(ITributacoesRepositorio repositorio)
         {
-            _contexto = contexto;
-            _repositorio = new TributacoesRepositorio(_contexto);
+            _repositorio = repositorio;
         }
 
         public void GravarTributos(Int64 CenarioTributarioID, TributosRetorno tribIMendes, List<Produtos> listaProdutos)
@@ -27,7 +26,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
 
             tributacaoInfast.semRetorno = CriaObjetoItensSemRetorno(CenarioTributarioID, tribIMendes);
 
-            _repositorio.SalvarTributacao(tributacaoInfast);
+            _repositorio.IncluirTributacao(tributacaoInfast);
         }
 
         private TributacaoCabecalho CriarObjetoTributacao(Int64 CenarioTributarioID, TributosRetorno tribIMendes)

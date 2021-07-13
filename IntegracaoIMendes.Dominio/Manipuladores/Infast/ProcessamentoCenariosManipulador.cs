@@ -4,45 +4,35 @@ using System.Linq;
 using IntegracaoIMendes.Dominio.Entidades.IMendes;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Repositorios;
 using IntegracaoIMendes.Dominio.Servicos;
-using IntegracaoIMendes.Dominio.ContextoDados;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 
 namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
     public class ProcessamentoCenariosManipulador
     {
-        private InfastContextoDados _contexto;
-        private ProcessamentoCenariosRepositorio _repositorio;
+        private IProcessamentoCenariosRepositorio _repositorioProcessamento;
+        private ICenariosRepositorio _repositorioCenario;
+        private ITributacoesRepositorio _repositorioTributacoes;
+        private IProdutosRepositorio _repositorioProdutos;
         private Configuracoes _config;
 
-        public ProcessamentoCenariosManipulador(InfastContextoDados contexto,
-                                            Configuracoes config)
+        public ProcessamentoCenariosManipulador(IProcessamentoCenariosRepositorio repositorioProcessamentoCenario,
+                                                ICenariosRepositorio repositorioCenario,
+                                                ITributacoesRepositorio repositorioTributacoes,
+                                                IProdutosRepositorio repositorioProdutos,
+                                                Configuracoes config)
         {
-            _contexto = contexto;
+            _repositorioProcessamento = repositorioProcessamentoCenario;
+            _repositorioCenario = repositorioCenario;
+            _repositorioTributacoes = repositorioTributacoes;
+            _repositorioProdutos = repositorioProdutos;
             _config = config;
-            _repositorio = new ProcessamentoCenariosRepositorio(_contexto);
         }
 
-        public void ProcessarCenarios()
+        public void ProcessarCenarios(IEnumerable<Cenarios> listaCenarios, List<Produtos> listaProdutos)
         {
-            IEnumerable<Cenarios> listaCenariosIMendes = CarregarCenariosIMendes().OrderBy(x => x.DataHoraUltimoProcessamento);
-
-            if (listaCenariosIMendes.Count<Cenarios>() == 0)
-            {
-                CriarLogProcessamentoCenario(null, null, 0, "Nenhum cenário localizado para integração.");
-                return;
-            }
-
-            List<Produtos> listaProdutos = CarregarProdutosParaIntegracao();
-
-            if (listaProdutos.Count == 0)
-            {
-                CriarLogProcessamentoCenario(null, listaProdutos, 0, "Nenhum produto localizado para integração.");
-                return;
-            }
-
-            foreach (Cenarios cenario in listaCenariosIMendes)
+            foreach (Cenarios cenario in listaCenarios)
             {
                 if (cenario.DataHoraUltimoProcessamento.ToString("dd/MM/yyyy") == "01/01/1900" ||
                     DateTime.Compare(System.DateTime.Now, cenario.DataHoraUltimoProcessamento) > cenario.IntervaloDeBuscaEmDias)
@@ -58,36 +48,6 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
             }  
         }
 
-        private IEnumerable<Cenarios> CarregarCenariosIMendes()
-        {
-            try
-            {
-                CenariosManipulador cenariosManipulador = new CenariosManipulador(_contexto);
-
-                return cenariosManipulador.CarregarListaCenarios();
-            }
-            catch (Exception)
-            {
-                IEnumerable<Cenarios> empty = Enumerable.Empty<Cenarios>();
-                return empty;
-            }
-        }
-
-        private List<Produtos> CarregarProdutosParaIntegracao(Int64 produtoId = 0, string tipoClassificacaoProdutos = "")
-        {
-            try
-            {
-                ProdutosManipulador produtosInfastManipulador = new ProdutosManipulador(_contexto);
-
-                return produtosInfastManipulador.PesquisarProdutos(produtoId, tipoClassificacaoProdutos).ToList();
-            }
-            catch (Exception)
-            {
-                List<Produtos> empty = new List<Produtos>();
-                return empty;
-            }
-        }
-
         public Int64 RetornarNumeroRequisicoesIMendesEstimadasParaProcessamentoCenario(Cenarios cenario, List<Produtos> listaProdutos)
         {
             CalculoRequisicoesIMendesServico calculoRequisicoes = new CalculoRequisicoesIMendesServico();
@@ -99,7 +59,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 
         public Int64 RetornarNumeroRequisicoesRealizadasIMendes(DateTime data)
         {
-            return _repositorio.RetornarNumeroRequisicoesConsumidas(data);
+            return _repositorioProcessamento.RetornarNumeroRequisicoesConsumidas(data);
         }
 
         private void ProcessarCenario(Cenarios cenario, List<Produtos> listaProdutos)
@@ -180,7 +140,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
             if (tribRet.ErroRetorno == false)
             {
                 //Grava os produtos no Infast
-                TributacoesInfastManipulador tributacaoInfastManipulador = new TributacoesInfastManipulador(_contexto);
+                TributacoesInfastManipulador tributacaoInfastManipulador = new TributacoesInfastManipulador(_repositorioTributacoes);
                 tributacaoInfastManipulador.GravarTributos(cenario.ID, tribRet, listaProdutos);
             }
             else
@@ -194,7 +154,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 
         private void AtualizarDataProcessamentoCenario(Cenarios cenario)
         {
-            CenariosManipulador cenariosManipulador = new CenariosManipulador(_contexto);
+            CenariosManipulador cenariosManipulador = new CenariosManipulador(_repositorioCenario, _repositorioProdutos, _config);
 
             cenariosManipulador.AtualizarDataProcessamentoCenario(cenario.ID);
         }
@@ -215,7 +175,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
             logProcessamento.QtdRequisicoesRealizadas = qtdRequisicoesRealizadas;
             logProcessamento.Mensagem = mensagem;
 
-            _repositorio.IncluirProcessamentoCenario(logProcessamento);
+            _repositorioProcessamento.IncluirProcessamentoCenario(logProcessamento);
         }
     }
 }

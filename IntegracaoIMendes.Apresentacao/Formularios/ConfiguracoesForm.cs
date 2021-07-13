@@ -2,6 +2,7 @@
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
 using IntegracaoIMendes.Dominio.Manipuladores.Infast;
+using IntegracaoIMendes.Dominio.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,13 +14,14 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
         Dominio.ContextoDados.InfastContextoDados _contexto;
         ConfiguracoesManipulador _configManipulador;
 
-        public configuracoesForm()
+        public configuracoesForm(Dominio.ContextoDados.InfastContextoDados contexto)
         {
             InitializeComponent();
 
-            _contexto = new Dominio.ContextoDados.InfastContextoDados(Properties.Settings.Default.Server.ToString(), Properties.Settings.Default.Database.ToString(), Properties.Settings.Default.User.ToString(), Properties.Settings.Default.Password.ToString());
+            _contexto = contexto;
 
-            _configManipulador = new Dominio.Manipuladores.Infast.ConfiguracoesManipulador(_contexto);
+            ConfiguracoesRepositorio repositorio = new ConfiguracoesRepositorio(_contexto);
+            _configManipulador = new Dominio.Manipuladores.Infast.ConfiguracoesManipulador(repositorio);
         }
 
         private void configuracoesForm_Load(object sender, EventArgs e)

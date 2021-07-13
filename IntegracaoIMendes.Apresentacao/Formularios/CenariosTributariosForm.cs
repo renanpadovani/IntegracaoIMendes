@@ -1,7 +1,9 @@
 ﻿using IntegracaoIMendes.Apresentacao.Entitidades;
 using IntegracaoIMendes.Dominio.ContextoDados;
+using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
 using IntegracaoIMendes.Dominio.Manipuladores.Infast;
+using IntegracaoIMendes.Dominio.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,13 +15,25 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
         InfastContextoDados _contexto;
         CenariosManipulador _cenarioManipulador;
 
-        public cenariosTributariosForm()
+        public cenariosTributariosForm(InfastContextoDados contexto)
         {
             InitializeComponent();
 
-            _contexto = new Dominio.ContextoDados.InfastContextoDados(Properties.Settings.Default.Server.ToString(), Properties.Settings.Default.Database.ToString(), Properties.Settings.Default.User.ToString(), Properties.Settings.Default.Password.ToString());
+            _contexto = contexto;
 
-            _cenarioManipulador = new Dominio.Manipuladores.Infast.CenariosManipulador(_contexto);
+            CenariosRepositorio cenarioRepositorio = new CenariosRepositorio(_contexto);
+            ProdutosRepositorio produtosRepositorio = new ProdutosRepositorio(_contexto);
+            Configuracoes config = CarregarConfiguracao();
+
+            _cenarioManipulador = new Dominio.Manipuladores.Infast.CenariosManipulador(cenarioRepositorio, produtosRepositorio, config);
+        }
+
+        private Configuracoes CarregarConfiguracao()
+        {
+            ConfiguracoesRepositorio configRepositorio = new ConfiguracoesRepositorio(_contexto);
+            ConfiguracoesManipulador configManipulador = new ConfiguracoesManipulador(configRepositorio);
+
+            return configManipulador.CarregarConfiguracao();
         }
 
         private void configuracaoCenariosForm_Load(object sender, EventArgs e)

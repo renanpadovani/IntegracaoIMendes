@@ -2,6 +2,7 @@
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Mapeamentos;
 using IntegracaoIMendes.Dominio.Modelos;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +10,7 @@ using System.Linq;
 
 namespace IntegracaoIMendes.Dominio.Repositorios
 {
-    public class CenariosRepositorio 
+    public class CenariosRepositorio : ICenariosRepositorio
     {
         private readonly ContextoDados.InfastContextoDados _contexto;
         private CenariosMapeamento _mapp;
@@ -20,7 +21,7 @@ namespace IntegracaoIMendes.Dominio.Repositorios
             _mapp = new CenariosMapeamento();
         }
 
-        public IEnumerable<Cenarios> CarregarListaCenarios()
+        public IEnumerable<Cenarios> PesquisarCenarios()
         {
             List<Cenarios> listaCenarios = new List<Cenarios>();
 
@@ -107,7 +108,7 @@ namespace IntegracaoIMendes.Dominio.Repositorios
             return Int64.Parse(_contexto.Connection.ExecuteScalar(insertCenario, _mapp.Mapp(cenario)).ToString()); 
         }
 
-        public Int64 AlterarCenario(Cenarios cenario)
+        public void AlterarCenario(Cenarios cenario)
         {
             string updateCenario = "Update Tb_Imendes_Cenarios Set " +
                                     "IMC_UfCliente = @UfCliente, " +
@@ -123,7 +124,7 @@ namespace IntegracaoIMendes.Dominio.Repositorios
                                     "IMC_DataHoraUltimoProcessamento = @DataHoraUltimoProcessamento " +
                                     "Where IMC_ID = " + cenario.ID.ToString();
 
-            return _contexto.Connection.Execute(updateCenario, _mapp.Mapp(cenario));
+            _contexto.Connection.Execute(updateCenario, _mapp.Mapp(cenario));
         }
     }
 }

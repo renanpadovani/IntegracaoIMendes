@@ -1,28 +1,31 @@
 ﻿using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Repositorios;
 using System;
 using System.Collections.Generic;
 using IntegracaoIMendes.Dominio.Servicos;
-using IntegracaoIMendes.Dominio.ContextoDados;
 using System.Linq;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 
 namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
     public class CenariosManipulador
     {
-        private readonly InfastContextoDados _contexto;
-        private CenariosRepositorio _cenarioRepositorio;
+        private readonly ICenariosRepositorio _cenarioRepositorio;
+        private readonly IProdutosRepositorio _produtoRepositorio;
+        private readonly Configuracoes _configuracao;
 
-        public CenariosManipulador(InfastContextoDados contexto)
+        public CenariosManipulador(ICenariosRepositorio cenarioRepositorio,
+                                   IProdutosRepositorio produtoRepositorio,
+                                   Configuracoes configuracao)
         {
-            _contexto = contexto;
-            _cenarioRepositorio = new CenariosRepositorio(_contexto);
+            _cenarioRepositorio = cenarioRepositorio;
+            _produtoRepositorio = produtoRepositorio;
+            _configuracao = configuracao;
         }
 
         public IEnumerable<Cenarios> CarregarListaCenarios()
-        { 
-            return _cenarioRepositorio.CarregarListaCenarios();
+        {
+            return _cenarioRepositorio.PesquisarCenarios();
         }
 
         public Cenarios CarregarCenario(Int64 Id)
@@ -55,36 +58,36 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 
             novoCenario.Validar();
 
-            ValidarLimiteRequisicoes(finalidades);
+            ValidarLimiteRequisicoes(finalidades, CarregarProdutos());
                 
             novoCenario.ID = _cenarioRepositorio.IncluirCenario(novoCenario);
 
             return novoCenario;
         }
 
-        private void ValidarLimiteRequisicoes(List<EFinalidade> finalidades)
+        private void ValidarLimiteRequisicoes(List<EFinalidade> finalidades, IEnumerable<Produtos> listaProdutos)
         {
-            ConfiguracoesManipulador configuracoesManipulador = new ConfiguracoesManipulador(_contexto);
-            Configuracoes configuracao = configuracoesManipulador.CarregarConfiguracao();
-            
-            ProdutosManipulador produtosManipulador = new ProdutosManipulador(_contexto);
-            IEnumerable<Produtos> listaProdutos = produtosManipulador.PesquisarProdutos(0, "");
-
             CalculoRequisicoesIMendesServico calculoRequisicoes = new CalculoRequisicoesIMendesServico();
 
             Int64 numeroRequisicoesNecessarias = calculoRequisicoes.RetornarNumeroRequisicoesIMendesEstimadasParaProcessamentoCenario(
-                                                                                                    configuracao.QtdProdutosPorRequisicao,
+                                                                                                    _configuracao.QtdProdutosPorRequisicao,
                                                                                                     listaProdutos.ToList(),
                                                                                                     finalidades);
 
-            if (numeroRequisicoesNecessarias > configuracao.QtdRequisicoesDiarias)
+            if (numeroRequisicoesNecessarias > _configuracao.QtdRequisicoesDiarias)
             {
                 throw new Exception("A inclusão do cenário não pode ser realizada: Número de requisições para esse cenário (" + 
                                         numeroRequisicoesNecessarias.ToString() + ") é superior ao número de requisições diárias disponíveis (" + 
-                                        configuracao.QtdRequisicoesDiarias.ToString() + ").");
+                                        _configuracao.QtdRequisicoesDiarias.ToString() + ").");
             }
         }
 
+        private List<Produtos> CarregarProdutos()
+        {
+            ProdutosManipulador produtosManipulador = new ProdutosManipulador(_produtoRepositorio);
+
+            return produtosManipulador.PesquisarProdutos().ToList();
+        }
 
         public void InativarCenario(Int64 Id)
         {

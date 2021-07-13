@@ -4,6 +4,9 @@ using System;
 using System.Windows.Forms;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using System.Collections.Generic;
+using System.Linq;
+using IntegracaoIMendes.Dominio.Repositorios;
+using IntegracaoIMendes.Dominio.Manipuladores;
 
 namespace IntegracaoIMendes.Apresentacao.Formularios
 {
@@ -63,13 +66,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             integracaobackgroundWorker.RunWorkerAsync();
         }
 
-        private Configuracoes CarregarConfiguracaoIMendes()
-        {
-            ConfiguracoesManipulador configuracoesManipulador = new ConfiguracoesManipulador(_contexto);
-
-            return configuracoesManipulador.CarregarConfiguracao();
-        }
-
         private void credenciaisBancoDeDadosINFASTERPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConfiguracoesBDForm oFormConfiguracaoBD = new ConfiguracoesBDForm();
@@ -78,13 +74,13 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private void configuraçõesIMendesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            configuracoesForm oFormConfiguracao = new configuracoesForm();
+            configuracoesForm oFormConfiguracao = new configuracoesForm(_contexto);
             oFormConfiguracao.ShowDialog();
         }
 
         private void cenáriosTributáriosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cenariosTributariosForm oFormCenario = new cenariosTributariosForm();
+            cenariosTributariosForm oFormCenario = new cenariosTributariosForm(_contexto);
             oFormCenario.ShowDialog();
         }
 
@@ -107,9 +103,34 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             {
                 listaMensagens.Add("Integração iniciada.");
 
-                _processamentoCenariosManipulador = new ProcessamentoCenariosManipulador(_contexto, config);
+                IEnumerable<Cenarios> listaCenarios = CarregarCenarios().OrderBy(x => x.DataHoraUltimoProcessamento);
 
-                _processamentoCenariosManipulador.ProcessarCenarios();
+                if (listaCenarios.Count<Cenarios>() == 0)
+                {
+                    listaMensagens.Add("Nenhum cenário localizado para integração.");
+                    return;
+                }
+
+                List<Produtos> listaProdutos = CarregarProdutosParaIntegracao();
+
+                if (listaProdutos.Count == 0)
+                {
+                    listaMensagens.Add("Nenhum produto localizado para integração.");
+                    return;
+                }
+
+                ProcessamentoCenariosRepositorio repositorioProcessamentoCenarios = new ProcessamentoCenariosRepositorio(_contexto);
+                CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
+                TributacoesRepositorio repositorioTributacoes = new TributacoesRepositorio(_contexto);
+                ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
+
+                _processamentoCenariosManipulador = new ProcessamentoCenariosManipulador(repositorioProcessamentoCenarios,
+                                                                                         repositorioCenarios,
+                                                                                         repositorioTributacoes,
+                                                                                         repositorioProdutos,
+                                                                                         CarregarConfiguracaoIMendes());
+
+                _processamentoCenariosManipulador.ProcessarCenarios(listaCenarios, listaProdutos);
 
                 listaMensagens.Add("Integração concluída, aguardando próximo ciclo.");
             }
@@ -117,10 +138,48 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                 listaMensagens.Add("É necessário configurar a integração antes de iniciá-la.");
         }
 
-        private void integracaobackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private Configuracoes CarregarConfiguracaoIMendes()
         {
+            ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
+            ConfiguracoesManipulador configuracoesManipulador = new ConfiguracoesManipulador(repositorioConfiguracoes);
 
+            return configuracoesManipulador.CarregarConfiguracao();
         }
+
+        private IEnumerable<Cenarios> CarregarCenarios()
+        {
+            try
+            {
+                CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
+                ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
+                CenariosManipulador cenariosManipulador = new CenariosManipulador(repositorioCenarios,
+                                                                                  repositorioProdutos,
+                                                                                  CarregarConfiguracaoIMendes());
+
+                return cenariosManipulador.CarregarListaCenarios();
+            }
+            catch (Exception)
+            {
+                IEnumerable<Cenarios> empty = Enumerable.Empty<Cenarios>();
+                return empty;
+            }
+        }
+
+    private List<Produtos> CarregarProdutosParaIntegracao(Int64 produtoId = 0, string tipoClassificacaoProdutos = "")
+    {
+        try
+        {
+            ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
+            ProdutosManipulador produtosInfastManipulador = new ProdutosManipulador(repositorioProdutos);
+
+            return produtosInfastManipulador.PesquisarProdutos(produtoId, tipoClassificacaoProdutos).ToList();
+        }
+        catch (Exception)
+        {
+            List<Produtos> empty = new List<Produtos>();
+            return empty;
+        }
+    }
 
         private void logIntegracaotimer_Tick(object sender, EventArgs e)
         {

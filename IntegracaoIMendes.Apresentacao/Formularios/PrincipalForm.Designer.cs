@@ -107,7 +107,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // integracaobackgroundWorker
             // 
             this.integracaobackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.integracaobackgroundWorker_DoWork);
-            this.integracaobackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.integracaobackgroundWorker_RunWorkerCompleted);
             // 
             // statusStrip1
             // 

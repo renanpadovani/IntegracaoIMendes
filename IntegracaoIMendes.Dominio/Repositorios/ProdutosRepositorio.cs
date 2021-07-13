@@ -3,10 +3,11 @@ using System.Data;
 using Dapper;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using System;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 
 namespace IntegracaoIMendes.Dominio.Repositorios
 {
-    public class ProdutosRepositorio
+    public class ProdutosRepositorio : IProdutosRepositorio
     {
         private readonly ContextoDados.InfastContextoDados _contexto;
         public ProdutosRepositorio(ContextoDados.InfastContextoDados contexto)

@@ -1,13 +1,13 @@
 ﻿using Dapper;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
 namespace IntegracaoIMendes.Dominio.Repositorios
 {
-    public class ConfiguracoesRepositorio
+    public class ConfiguracoesRepositorio : IConfiguracoesRepositorio
     {
         private readonly ContextoDados.InfastContextoDados _contexto;
         public ConfiguracoesRepositorio(ContextoDados.InfastContextoDados contexto)

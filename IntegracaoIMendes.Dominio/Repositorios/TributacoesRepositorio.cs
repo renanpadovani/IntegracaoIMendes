@@ -1,13 +1,12 @@
 ﻿using Dapper;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
-
 
 namespace IntegracaoIMendes.Dominio.Repositorios
 {
-    public class TributacoesRepositorio
+    public class TributacoesRepositorio : ITributacoesRepositorio
     {
         ContextoDados.InfastContextoDados _contexto;
 
@@ -16,29 +15,29 @@ namespace IntegracaoIMendes.Dominio.Repositorios
             _contexto = contexto;
         }
 
-        public void SalvarTributacao(TributacaoCabecalho tribCab)
+        public void IncluirTributacao(TributacaoCabecalho tribCab)
         {
             Int64 idCabecalho = 0;
             Int64 idProdutoGrupo = 0;
 
-            idCabecalho = SalvarTributacaoCabecalho(tribCab);
+            idCabecalho = IncluirTributacaoCabecalho(tribCab);
 
             foreach (TributacaoProdutoGrupo grupo in tribCab.grupos)
             {
                 grupo.CabecalhoID = idCabecalho;
 
-                idProdutoGrupo = SalvarTributacaoProdutoGrupo(grupo);
+                idProdutoGrupo = IncluirTributacaoProdutoGrupo(grupo);
 
                 foreach (TributacaoProdutoGrupoLista lista in grupo.regras)
                 {
                     lista.ProdutoGrupoID = idProdutoGrupo;
 
-                    SSalvarTributacaoProdutoGrupoLista(lista);
+                    IncluirTributacaoProdutoGrupoLista(lista);
                 }
             }
         }
 
-        private Int64 SalvarTributacaoCabecalho(TributacaoCabecalho tribCab)
+        public Int64 IncluirTributacaoCabecalho(TributacaoCabecalho tribCab)
         {
             string insertCabecalho = "";
 
@@ -71,7 +70,7 @@ namespace IntegracaoIMendes.Dominio.Repositorios
             return Int64.Parse(_contexto.Connection.ExecuteScalar(insertCabecalho, tribCab).ToString());
         }
 
-        private Int64 SalvarTributacaoProdutoGrupo(TributacaoProdutoGrupo grupo)
+        public Int64 IncluirTributacaoProdutoGrupo(TributacaoProdutoGrupo grupo)
         {
              string insertProdutoGrupo = "Insert Into Tb_IMendes_TributacaoProdutoGrupo " +
                                     "(IGI_Empresa_ID, " +
@@ -126,7 +125,7 @@ namespace IntegracaoIMendes.Dominio.Repositorios
             return Int64.Parse(_contexto.Connection.ExecuteScalar(insertProdutoGrupo, grupo).ToString());
         }
 
-        private void SSalvarTributacaoProdutoGrupoLista(TributacaoProdutoGrupoLista lista)
+        public void IncluirTributacaoProdutoGrupoLista(TributacaoProdutoGrupoLista lista)
         {
             string insertProdutoGrupoLista = "Insert Into Tb_IMendes_TributacaoProdutoGrupoLista " +
                                     "(IGL_Empresa_ID, " +

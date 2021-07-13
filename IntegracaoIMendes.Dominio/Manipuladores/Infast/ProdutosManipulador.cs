@@ -1,6 +1,5 @@
-﻿using IntegracaoIMendes.Dominio.ContextoDados;
-using IntegracaoIMendes.Dominio.Entidades.Infast;
-using IntegracaoIMendes.Dominio.Repositorios;
+﻿using IntegracaoIMendes.Dominio.Entidades.Infast;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,11 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
 {
     public class ProdutosManipulador
     {
-        private readonly InfastContextoDados _contexto;
-        private ProdutosRepositorio _produtoRepositorio;
+        private readonly IProdutosRepositorio _produtoRepositorio;
 
-        public ProdutosManipulador(InfastContextoDados contexto)
+        public ProdutosManipulador(IProdutosRepositorio produtoRepositorio)
         {
-            _contexto = contexto;
-            _produtoRepositorio = new ProdutosRepositorio(_contexto);
+            _produtoRepositorio = produtoRepositorio;
         }
 
         public IEnumerable<Produtos> PesquisarProdutos(Int64 produtoId = 0, string tipoClassificacao = "")

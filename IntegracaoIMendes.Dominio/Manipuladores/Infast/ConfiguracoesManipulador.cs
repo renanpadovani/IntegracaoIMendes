@@ -7,13 +7,11 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
     public class ConfiguracoesManipulador
     {
-        private readonly InfastContextoDados _contexto;
         private ConfiguracoesRepositorio _repositorio;
 
-        public ConfiguracoesManipulador(InfastContextoDados contexto)
+        public ConfiguracoesManipulador(ConfiguracoesRepositorio repositorio)
         {
-            _contexto = contexto;
-            _repositorio = new ConfiguracoesRepositorio(_contexto);
+            _repositorio = repositorio;
         }
 
         public Configuracoes CarregarConfiguracao()
