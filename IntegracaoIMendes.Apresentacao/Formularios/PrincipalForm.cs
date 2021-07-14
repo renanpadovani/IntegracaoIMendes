@@ -14,8 +14,8 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
     public partial class PrincipalForm : Form
     {
         Dominio.ContextoDados.InfastContextoDados _contexto;
-        //ProcessamentoCenariosManipulador _processamentoCenariosManipulador;
         private List<string> listaMensagens = new List<string>();
+        private Configuracoes _configuracao;
 
         public PrincipalForm()
         {
@@ -30,9 +30,9 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
                 _contexto = new Dominio.ContextoDados.InfastContextoDados(Properties.Settings.Default.Server.ToString(), Properties.Settings.Default.Database.ToString(), Properties.Settings.Default.User.ToString(), Properties.Settings.Default.Password.ToString());
 
-                Configuracoes config = CarregarConfiguracaoIMendes();
+                _configuracao = CarregarConfiguracaoIMendes();
 
-                if (config == null) 
+                if (_configuracao == null) 
                     listaMensagens.Add("É necessário configurar a integração antes de iniciá-la.");
                 else
                     listaMensagens.Add("Aguardando integração.");
@@ -98,27 +98,10 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private void IniciarIntegracao()
         {
-            Configuracoes config = CarregarConfiguracaoIMendes();
-
-            if (config != null)
+            if (_configuracao != null)
             {
                 listaMensagens.Add("Integração iniciada.");
 
-                IEnumerable<Cenarios> listaCenarios = CarregarCenarios().OrderBy(x => x.DataHoraUltimoProcessamento);
-
-                if (listaCenarios.Count<Cenarios>() == 0)
-                {
-                    listaMensagens.Add("Nenhum cenário localizado para integração.");
-                    return;
-                }
-
-                List<Produtos> listaProdutos = CarregarProdutosParaIntegracao();
-
-                if (listaProdutos.Count == 0)
-                {
-                    listaMensagens.Add("Nenhum produto localizado para integração.");
-                    return;
-                }
 
                 ProcessamentoCenariosRepositorio repositorioProcessamentoCenarios = new ProcessamentoCenariosRepositorio(_contexto);
                 CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
@@ -134,13 +117,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
                 _processamentoServico.ProcessarCenarios();
 
-                /*_processamentoCenariosManipulador = new ProcessamentoCenariosManipulador(repositorioProcessamentoCenarios,
-                                                                                         repositorioCenarios,
-                                                                                         repositorioTributacoes,
-                                                                                         repositorioProdutos,
-                                                                                         CarregarConfiguracaoIMendes());
 
-                _processamentoCenariosManipulador.ProcessarCenarios(listaCenarios, listaProdutos);*/
 
                 listaMensagens.Add("Integração concluída, aguardando próximo ciclo.");
             }
@@ -155,43 +132,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
             return configuracoesManipulador.CarregarConfiguracao();
         }
-
-        private IEnumerable<Cenarios> CarregarCenarios()
-        {
-            try
-            {
-                CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
-                ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
-                ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
-
-                CenariosServico cenariosServico  = new CenariosServico(repositorioCenarios,
-                                                                       repositorioProdutos,
-                                                                       repositorioConfiguracoes);
-
-                return cenariosServico.CarregarListaCenarios();
-            }
-            catch (Exception)
-            {
-                IEnumerable<Cenarios> empty = Enumerable.Empty<Cenarios>();
-                return empty;
-            }
-        }
-
-    private List<Produtos> CarregarProdutosParaIntegracao(Int64 produtoId = 0, string tipoClassificacaoProdutos = "")
-    {
-        try
-        {
-            ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
-            ProdutosManipulador produtosInfastManipulador = new ProdutosManipulador(repositorioProdutos);
-
-            return produtosInfastManipulador.PesquisarProdutos(produtoId, tipoClassificacaoProdutos).ToList();
-        }
-        catch (Exception)
-        {
-            List<Produtos> empty = new List<Produtos>();
-            return empty;
-        }
-    }
 
         private void logIntegracaotimer_Tick(object sender, EventArgs e)
         {
