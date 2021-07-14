@@ -41,7 +41,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
 
             if (listaCenarios.Count<Cenarios>() == 0)
             {
-                //listaMensagens.Add("Nenhum cenário localizado para integração.");
+                _processamentoCenarioManipulador.CriarLogProcessamentoCenario(null, null, 0, "Nenhum cenário foi encontrado.");
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
 
             if (listaProdutos.Count == 0)
             {
-                //listaMensagens.Add("Nenhum produto localizado para integração.");
+                _processamentoCenarioManipulador.CriarLogProcessamentoCenario(null, listaProdutos, 0, "Nenhum produto foi encontrado.");
                 return;
             }
 
