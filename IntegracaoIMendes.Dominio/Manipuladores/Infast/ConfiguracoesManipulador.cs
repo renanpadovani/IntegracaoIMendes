@@ -1,11 +1,11 @@
 ﻿using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Repositorios;
 using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
+using System;
 
 namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
-    public class ConfiguracoesManipulador
+    public class ConfiguracoesManipulador 
     {
         private IConfiguracoesRepositorio _repositorio;
 
@@ -18,6 +18,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
         {
             return _repositorio.CarregarConfiguracao();
         }
+
 
         public Configuracoes IncluirConfiguracao(string loginIMendes, 
                                                 string senhaIMendes,

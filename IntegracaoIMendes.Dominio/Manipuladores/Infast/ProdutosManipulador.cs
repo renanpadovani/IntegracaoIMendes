@@ -8,18 +8,18 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
 {
     public class ProdutosManipulador
     {
-        private readonly IProdutosRepositorio _produtoRepositorio;
+        private readonly IProdutosRepositorio _repositorio;
 
         public ProdutosManipulador(IProdutosRepositorio produtoRepositorio)
         {
-            _produtoRepositorio = produtoRepositorio;
+            _repositorio = produtoRepositorio;
         }
 
         public IEnumerable<Produtos> PesquisarProdutos(Int64 produtoId = 0, string tipoClassificacao = "")
         {
             try
             {
-                return _produtoRepositorio.PesquisarProdutos(produtoId, tipoClassificacao).OrderBy(o => o.origemMercadoria);
+                return _repositorio.PesquisarProdutos(produtoId, tipoClassificacao).OrderBy(o => o.origemMercadoria);
             }
             catch (Exception)
             {

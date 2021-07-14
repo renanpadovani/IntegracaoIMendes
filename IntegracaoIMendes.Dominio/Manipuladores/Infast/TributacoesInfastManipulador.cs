@@ -1,7 +1,5 @@
-﻿using IntegracaoIMendes.Dominio.ContextoDados;
-using IntegracaoIMendes.Dominio.Entidades.IMendes;
+﻿using IntegracaoIMendes.Dominio.Entidades.IMendes;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
-using IntegracaoIMendes.Dominio.Repositorios;
 using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Collections.Generic;

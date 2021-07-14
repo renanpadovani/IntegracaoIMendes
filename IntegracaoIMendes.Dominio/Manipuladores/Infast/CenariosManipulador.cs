@@ -8,18 +8,18 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
     public class CenariosManipulador
     {
-        private readonly ICenariosRepositorio _cenarioRepositorio;
+        private readonly ICenariosRepositorio _Repositorio;
 
         public CenariosManipulador(ICenariosRepositorio cenarioRepositorio)
         {
-            _cenarioRepositorio = cenarioRepositorio;
+            _Repositorio = cenarioRepositorio;
         }
 
         public IEnumerable<Cenarios> CarregarListaCenarios()
         {
             try
             {
-                return _cenarioRepositorio.PesquisarCenarios();
+                return _Repositorio.PesquisarCenarios();
             }
             catch (Exception)
             {
@@ -30,34 +30,34 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 
         public Cenarios CarregarCenario(Int64 Id)
         {
-            return _cenarioRepositorio.CarregarCenario(Id);
+            return _Repositorio.CarregarCenario(Id);
         }
 
         public Cenarios IncluirCenario(Cenarios novoCenario)
         {
             novoCenario.Validar();
                 
-            novoCenario.ID = _cenarioRepositorio.IncluirCenario(novoCenario);
+            novoCenario.ID = _Repositorio.IncluirCenario(novoCenario);
 
             return novoCenario;
         }
 
         public void InativarCenario(Int64 Id)
         {
-            Cenarios cenario = _cenarioRepositorio.CarregarCenario(Id);
+            Cenarios cenario = _Repositorio.CarregarCenario(Id);
 
             cenario.InativarCenario();
 
-            _cenarioRepositorio.AlterarCenario(cenario);
+            _Repositorio.AlterarCenario(cenario);
         }
 
         public void AtualizarDataProcessamentoCenario(Int64 Id)
         {
-            Cenarios cenario = _cenarioRepositorio.CarregarCenario(Id);
+            Cenarios cenario = _Repositorio.CarregarCenario(Id);
 
             cenario.AtualizarDataProcessamento();
 
-            _cenarioRepositorio.AlterarCenario(cenario);
+            _Repositorio.AlterarCenario(cenario);
         }
     }
 }

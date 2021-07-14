@@ -16,7 +16,10 @@ namespace IntegracaoIMendes.Dominio.ContextoDados
         public void Dispose()
         {
             if (Connection.State != System.Data.ConnectionState.Closed)
+            {
                 Connection.Close();
+                Connection.Dispose();
+            }
         }
     }
 }

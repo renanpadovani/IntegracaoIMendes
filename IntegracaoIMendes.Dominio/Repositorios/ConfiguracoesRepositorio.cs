@@ -34,7 +34,6 @@ namespace IntegracaoIMendes.Dominio.Repositorios
                     .FirstOrDefault();
         }
 
-
         public Int64 IncluirConfiguracao(Configuracoes config)
         {
             string insertConfig = "";

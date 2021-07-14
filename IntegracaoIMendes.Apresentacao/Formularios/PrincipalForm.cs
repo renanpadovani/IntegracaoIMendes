@@ -4,19 +4,17 @@ using System;
 using System.Windows.Forms;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
 using System.Collections.Generic;
-using System.Linq;
 using IntegracaoIMendes.Dominio.Repositorios;
-using IntegracaoIMendes.Dominio.Manipuladores;
 using IntegracaoIMendes.Dominio.Servicos;
+using IntegracaoIMendes.Dominio.ContextoDados;
 
 namespace IntegracaoIMendes.Apresentacao.Formularios
 {
     public partial class PrincipalForm : Form
     {
-        Dominio.ContextoDados.InfastContextoDados _contexto;
         private List<string> listaMensagens = new List<string>();
         private Configuracoes _configuracao;
-
+       
         public PrincipalForm()
         {
             InitializeComponent();
@@ -27,8 +25,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             try
             {
                 CarregarCredenciaisBancoDeDados();
-
-                _contexto = new Dominio.ContextoDados.InfastContextoDados(Properties.Settings.Default.Server.ToString(), Properties.Settings.Default.Database.ToString(), Properties.Settings.Default.User.ToString(), Properties.Settings.Default.Password.ToString());
 
                 _configuracao = CarregarConfiguracaoIMendes();
 
@@ -45,6 +41,11 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                 MessageBox.Show("Ocorreu um erro ao iniciar a conexão com o banco de dados:\n\n" + ex.Message + "\n\nEntre em contato com o suporte técnico.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
+        }
+
+        private InfastContextoDados CriarContextoDados()
+        {
+            return new InfastContextoDados(Properties.Settings.Default.Server.ToString(), Properties.Settings.Default.Database.ToString(), Properties.Settings.Default.User.ToString(), Properties.Settings.Default.Password.ToString());
         }
 
         private void CarregarCredenciaisBancoDeDados()
@@ -75,14 +76,22 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private void configuraçõesIMendesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            configuracoesForm oFormConfiguracao = new configuracoesForm(_contexto);
+            InfastContextoDados contexto = CriarContextoDados();
+
+            configuracoesForm oFormConfiguracao = new configuracoesForm(contexto);
             oFormConfiguracao.ShowDialog();
+
+            contexto.Dispose();
         }
 
         private void cenáriosTributáriosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cenariosTributariosForm oFormCenario = new cenariosTributariosForm(_contexto);
+            InfastContextoDados contexto = CriarContextoDados();
+
+            cenariosTributariosForm oFormCenario = new cenariosTributariosForm(contexto);
             oFormCenario.ShowDialog();
+
+            contexto.Dispose();
         }
 
         private void integracaotimer_Tick(object sender, EventArgs e)
@@ -100,14 +109,15 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
         {
             if (_configuracao != null)
             {
+                InfastContextoDados contexto = CriarContextoDados();
+
                 listaMensagens.Add("Integração iniciada.");
 
-
-                ProcessamentoCenariosRepositorio repositorioProcessamentoCenarios = new ProcessamentoCenariosRepositorio(_contexto);
-                CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
-                TributacoesRepositorio repositorioTributacoes = new TributacoesRepositorio(_contexto);
-                ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
-                ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
+                ProcessamentoCenariosRepositorio repositorioProcessamentoCenarios = new ProcessamentoCenariosRepositorio(contexto);
+                CenariosRepositorio repositorioCenarios = new CenariosRepositorio(contexto);
+                TributacoesRepositorio repositorioTributacoes = new TributacoesRepositorio(contexto);
+                ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(contexto);
+                ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(contexto);
 
                 ProcessamentoCenariosServico _processamentoServico = new ProcessamentoCenariosServico(repositorioProcessamentoCenarios,
                                                                                                       repositorioCenarios,
@@ -117,7 +127,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
                 _processamentoServico.ProcessarCenarios();
 
-
+                contexto.Dispose();
 
                 listaMensagens.Add("Integração concluída, aguardando próximo ciclo.");
             }
@@ -127,7 +137,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private Configuracoes CarregarConfiguracaoIMendes()
         {
-            ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
+            ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(CriarContextoDados());
             ConfiguracoesManipulador configuracoesManipulador = new ConfiguracoesManipulador(repositorioConfiguracoes);
 
             return configuracoesManipulador.CarregarConfiguracao();

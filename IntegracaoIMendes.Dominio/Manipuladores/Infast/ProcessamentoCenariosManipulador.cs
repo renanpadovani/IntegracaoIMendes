@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IntegracaoIMendes.Dominio.Entidades.IMendes;
 using IntegracaoIMendes.Dominio.Entidades.Infast;
-using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Servicos;
 using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 
 namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
-    public class ProcessamentoCenariosManipulador
+    public class ProcessamentoCenariosManipulador 
     {
-        private IProcessamentoCenariosRepositorio _repositorioProcessamento;
+        private IProcessamentoCenariosRepositorio _repositorio;
 
         public ProcessamentoCenariosManipulador(IProcessamentoCenariosRepositorio repositorioProcessamentoCenario)
         {
-            _repositorioProcessamento = repositorioProcessamentoCenario;
+            _repositorio = repositorioProcessamentoCenario;
         }
 
         public void CriarLogProcessamentoCenario(Cenarios cenario, List<Produtos> listaProdutos, int qtdRequisicoesRealizadas, string mensagem)
@@ -34,7 +31,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
             logProcessamento.QtdRequisicoesRealizadas = qtdRequisicoesRealizadas;
             logProcessamento.Mensagem = mensagem;
 
-            _repositorioProcessamento.IncluirProcessamentoCenario(logProcessamento);
+            _repositorio.IncluirProcessamentoCenario(logProcessamento);
         }
     }
 }
