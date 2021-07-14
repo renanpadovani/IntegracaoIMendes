@@ -1,9 +1,8 @@
 ﻿using IntegracaoIMendes.Apresentacao.Entitidades;
 using IntegracaoIMendes.Dominio.ContextoDados;
-using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Manipuladores.Infast;
 using IntegracaoIMendes.Dominio.Repositorios;
+using IntegracaoIMendes.Dominio.Servicos;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,7 +12,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
     public partial class cenariosTributariosForm : Form
     {
         InfastContextoDados _contexto;
-        CenariosManipulador _cenarioManipulador;
+        CenariosServico _cenarioServico;
 
         public cenariosTributariosForm(InfastContextoDados contexto)
         {
@@ -23,17 +22,9 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
             CenariosRepositorio cenarioRepositorio = new CenariosRepositorio(_contexto);
             ProdutosRepositorio produtosRepositorio = new ProdutosRepositorio(_contexto);
-            Configuracoes config = CarregarConfiguracao();
-
-            _cenarioManipulador = new Dominio.Manipuladores.Infast.CenariosManipulador(cenarioRepositorio, produtosRepositorio, config);
-        }
-
-        private Configuracoes CarregarConfiguracao()
-        {
             ConfiguracoesRepositorio configRepositorio = new ConfiguracoesRepositorio(_contexto);
-            ConfiguracoesManipulador configManipulador = new ConfiguracoesManipulador(configRepositorio);
 
-            return configManipulador.CarregarConfiguracao();
+            _cenarioServico = new CenariosServico(cenarioRepositorio, produtosRepositorio, configRepositorio);
         }
 
         private void configuracaoCenariosForm_Load(object sender, EventArgs e)
@@ -226,16 +217,15 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                 else
                     intervaloDeBuscaEmDias = (Int16)intervaloDeBuscaEmDiasnumericUpDown.Value;
 
-                    _cenarioManipulador.IncluirCenario(
-                                                ufEmitente,
-                                                cfopDestino,
-                                                regimeTributario,
-                                                tipoRegimeNormal,
-                                                finalidades,
-                                                caracteristicasTributarias,
-                                                ufsDestino,
-                                                tipoProduto,
-                                                intervaloDeBuscaEmDias);
+                _cenarioServico.IncluirCenario(ufEmitente,
+                                               cfopDestino,
+                                               regimeTributario,
+                                               tipoRegimeNormal,
+                                               finalidades,
+                                               caracteristicasTributarias,
+                                               ufsDestino,
+                                               tipoProduto,
+                                               intervaloDeBuscaEmDias);
 
                 MessageBox.Show("Atenção: Cenário Tributário criado com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -249,7 +239,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
         private void CarregarGridCenarios()
         {
-            cenariosdataGridView.DataSource = _cenarioManipulador.CarregarListaCenarios();
+            cenariosdataGridView.DataSource = _cenarioServico.CarregarListaCenarios();
         }
 
         private void removerCenariobutton_Click(object sender, EventArgs e)
@@ -266,7 +256,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                 {
                     Int64 id = Int64.Parse(cenariosdataGridView.CurrentRow.Cells[0].Value.ToString());
 
-                    _cenarioManipulador.InativarCenario(id);
+                    _cenarioServico.InativarCenario(id);
 
                     CarregarGridCenarios();
                 }

@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using IntegracaoIMendes.Dominio.Repositorios;
 using IntegracaoIMendes.Dominio.Manipuladores;
+using IntegracaoIMendes.Dominio.Servicos;
 
 namespace IntegracaoIMendes.Apresentacao.Formularios
 {
     public partial class PrincipalForm : Form
     {
         Dominio.ContextoDados.InfastContextoDados _contexto;
-        ProcessamentoCenariosManipulador _processamentoCenariosManipulador;
+        //ProcessamentoCenariosManipulador _processamentoCenariosManipulador;
         private List<string> listaMensagens = new List<string>();
 
         public PrincipalForm()
@@ -123,14 +124,23 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                 CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
                 TributacoesRepositorio repositorioTributacoes = new TributacoesRepositorio(_contexto);
                 ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
+                ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
 
-                _processamentoCenariosManipulador = new ProcessamentoCenariosManipulador(repositorioProcessamentoCenarios,
+                ProcessamentoCenariosServico _processamentoServico = new ProcessamentoCenariosServico(repositorioProcessamentoCenarios,
+                                                                                                      repositorioCenarios,
+                                                                                                      repositorioTributacoes,
+                                                                                                      repositorioProdutos,
+                                                                                                      repositorioConfiguracoes);
+
+                _processamentoServico.ProcessarCenarios();
+
+                /*_processamentoCenariosManipulador = new ProcessamentoCenariosManipulador(repositorioProcessamentoCenarios,
                                                                                          repositorioCenarios,
                                                                                          repositorioTributacoes,
                                                                                          repositorioProdutos,
                                                                                          CarregarConfiguracaoIMendes());
 
-                _processamentoCenariosManipulador.ProcessarCenarios(listaCenarios, listaProdutos);
+                _processamentoCenariosManipulador.ProcessarCenarios(listaCenarios, listaProdutos);*/
 
                 listaMensagens.Add("Integração concluída, aguardando próximo ciclo.");
             }
@@ -152,11 +162,13 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             {
                 CenariosRepositorio repositorioCenarios = new CenariosRepositorio(_contexto);
                 ProdutosRepositorio repositorioProdutos = new ProdutosRepositorio(_contexto);
-                CenariosManipulador cenariosManipulador = new CenariosManipulador(repositorioCenarios,
-                                                                                  repositorioProdutos,
-                                                                                  CarregarConfiguracaoIMendes());
+                ConfiguracoesRepositorio repositorioConfiguracoes = new ConfiguracoesRepositorio(_contexto);
 
-                return cenariosManipulador.CarregarListaCenarios();
+                CenariosServico cenariosServico  = new CenariosServico(repositorioCenarios,
+                                                                       repositorioProdutos,
+                                                                       repositorioConfiguracoes);
+
+                return cenariosServico.CarregarListaCenarios();
             }
             catch (Exception)
             {

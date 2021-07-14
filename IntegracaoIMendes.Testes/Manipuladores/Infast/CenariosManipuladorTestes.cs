@@ -11,7 +11,7 @@ namespace IntegracaoIMendes.Testes
         public void ValidarAtualizacaoDataProcessamentoComCenarioInvalido()
         {
 
-            CenariosManipulador cenariosManipulador = new CenariosManipulador();
+            //CenariosManipulador cenariosManipulador = new CenariosManipulador();
             Assert.Pass();
         }
     }

@@ -1,15 +1,15 @@
-﻿using IntegracaoIMendes.Dominio.ContextoDados;
-using IntegracaoIMendes.Dominio.Entidades.Infast;
+﻿using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
 using IntegracaoIMendes.Dominio.Repositorios;
+using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 
 namespace IntegracaoIMendes.Dominio.Manipuladores.Infast
 {
     public class ConfiguracoesManipulador
     {
-        private ConfiguracoesRepositorio _repositorio;
+        private IConfiguracoesRepositorio _repositorio;
 
-        public ConfiguracoesManipulador(ConfiguracoesRepositorio repositorio)
+        public ConfiguracoesManipulador(IConfiguracoesRepositorio repositorio)
         {
             _repositorio = repositorio;
         }
