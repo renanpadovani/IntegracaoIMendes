@@ -13,6 +13,10 @@ namespace IntegracaoIMendes.Dominio.Servicos
         {
             int qtdRequisicoes = 0;
 
+            if (listaProdutos == null) return 0;
+
+            if (listaFinalidades == null) return 0;
+
             if (listaProdutos.Count > 0)
             {
                 foreach (EFinalidade finalidade in listaFinalidades)
