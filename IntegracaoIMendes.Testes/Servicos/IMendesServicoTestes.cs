@@ -8,30 +8,53 @@ namespace IntegracaoIMendes.Testes.Servicos
     public class IMendesServicoTestes
     {
         TributosRequisicaoMocks _tributosRequisicaoMoks;
-        IMendesServico _iMendesServicoValido;
-        IMendesServico _iMendesServicoInvalido;
+        IMendesServico _iMendesServico;
 
         public IMendesServicoTestes()
         {
-            _iMendesServicoInvalido = RetornarInstanciaObjetoIMendesServicoComCredenciaisInvalidas();
-            _iMendesServicoValido = RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas();
             _tributosRequisicaoMoks = new TributosRequisicaoMocks();
+        }
+
+        private IMendesServico RetornarInstanciaObjetoIMendesServicoSemInformarCredenciais()
+        {
+            const string loginInvalido = "";
+            const string senhaInvalida = "";
+
+            return new IMendesServico(loginInvalido, senhaInvalida);
         }
 
         private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisInvalidas()
         {
-            return new IMendesServico("","");
+            const string loginInvalido = "62488937000105";
+            const string senhaInvalida = "senhaInvalida";
+
+            return new IMendesServico(loginInvalido, senhaInvalida);
         }
 
         private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas()
         {
-            return new IMendesServico("08956337000189", "ItDFirzvFV41");
+            const string loginValido = "08956337000189";
+            const string senhaValida = "ItDFirzvFV41";
+
+            return new IMendesServico(loginValido, senhaValida);
         }
 
         [Test]
         public void ValidarMetodo_PesquisarTributos_ComCredenciaisInvalidas()
         {
-            TributosRetorno retornoIMendes = _iMendesServicoInvalido.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
+            _iMendesServico = RetornarInstanciaObjetoIMendesServicoComCredenciaisInvalidas();
+
+            TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
+
+            Assert.IsTrue(retornoIMendes.ErroRetorno == true);
+        }
+
+        [Test]
+        public void ValidarMetodo_PesquisarTributos_SemCredenciais()
+        {
+            _iMendesServico = RetornarInstanciaObjetoIMendesServicoSemInformarCredenciais();
+
+            TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
 
             Assert.IsTrue(retornoIMendes.ErroRetorno == true);
         }
@@ -39,10 +62,11 @@ namespace IntegracaoIMendes.Testes.Servicos
         [Test]
         public void ValidarMetodo_PesquisarTributos_ComCredenciaisValidas()
         {
-            TributosRetorno retornoIMendes = _iMendesServicoValido.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
+            _iMendesServico = RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas();
+
+            TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
 
             Assert.IsTrue(retornoIMendes.ErroRetorno == false);
         }
-
     }
 }

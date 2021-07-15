@@ -6,8 +6,8 @@ namespace IntegracaoIMendes.Dominio.Servicos
 {
     public class IMendesServico
     {
-        string _login;
-        string _password;
+        private readonly string _login;
+        private readonly string _password;
 
         public IMendesServico(string login, string password)
         {
@@ -21,6 +21,14 @@ namespace IntegracaoIMendes.Dominio.Servicos
 
             try
             {
+                if (_login.Trim().Length == 0 || _password.Trim().Length == 0)
+                {
+                    retornoIMendes.ErroRetorno = true;
+                    retornoIMendes.MensagemErro = "Login/Senha não preenchidos.";
+                    return retornoIMendes;
+                }
+
+
                 var client = new RestClient("http://consultatributos.com.br:8080/api/v3/public/SaneamentoGrades");
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
