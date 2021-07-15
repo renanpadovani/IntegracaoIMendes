@@ -8,6 +8,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
     {
         private readonly string _login;
         private readonly string _password;
+        private const string urlSaneamentoGrades = "http://consultatributos.com.br:8080/api/v3/public/SaneamentoGrades";
 
         public IMendesServico(string login, string password)
         {
@@ -28,8 +29,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
                     return retornoIMendes;
                 }
 
-
-                var client = new RestClient("http://consultatributos.com.br:8080/api/v3/public/SaneamentoGrades");
+                var client = new RestClient(urlSaneamentoGrades);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("login", _login);

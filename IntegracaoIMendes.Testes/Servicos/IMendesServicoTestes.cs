@@ -15,30 +15,6 @@ namespace IntegracaoIMendes.Testes.Servicos
             _tributosRequisicaoMoks = new TributosRequisicaoMocks();
         }
 
-        private IMendesServico RetornarInstanciaObjetoIMendesServicoSemInformarCredenciais()
-        {
-            const string loginInvalido = "";
-            const string senhaInvalida = "";
-
-            return new IMendesServico(loginInvalido, senhaInvalida);
-        }
-
-        private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisInvalidas()
-        {
-            const string loginInvalido = "62488937000105";
-            const string senhaInvalida = "senhaInvalida";
-
-            return new IMendesServico(loginInvalido, senhaInvalida);
-        }
-
-        private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas()
-        {
-            const string loginValido = "08956337000189";
-            const string senhaValida = "ItDFirzvFV41";
-
-            return new IMendesServico(loginValido, senhaValida);
-        }
-
         [Test]
         public void ValidarMetodo_PesquisarTributos_ComCredenciaisInvalidas()
         {
@@ -47,6 +23,13 @@ namespace IntegracaoIMendes.Testes.Servicos
             TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
 
             Assert.IsTrue(retornoIMendes.ErroRetorno == true);
+        }
+        private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisInvalidas()
+        {
+            const string loginInvalido = "62488937000105";
+            const string senhaInvalida = "senhaInvalida";
+
+            return new IMendesServico(loginInvalido, senhaInvalida);
         }
 
         [Test]
@@ -58,6 +41,13 @@ namespace IntegracaoIMendes.Testes.Servicos
 
             Assert.IsTrue(retornoIMendes.ErroRetorno == true);
         }
+        private IMendesServico RetornarInstanciaObjetoIMendesServicoSemInformarCredenciais()
+        {
+            const string loginInvalido = "";
+            const string senhaInvalida = "";
+
+            return new IMendesServico(loginInvalido, senhaInvalida);
+        }
 
         [Test]
         public void ValidarMetodo_PesquisarTributos_ComCredenciaisValidas()
@@ -67,6 +57,23 @@ namespace IntegracaoIMendes.Testes.Servicos
             TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoValida());
 
             Assert.IsTrue(retornoIMendes.ErroRetorno == false);
+        }
+        private IMendesServico RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas()
+        {
+            const string loginValido = "08956337000189";
+            const string senhaValida = "ItDFirzvFV41";
+
+            return new IMendesServico(loginValido, senhaValida);
+        }
+
+        [Test]
+        public void ValidarMetodo_PesquisarTributos_ComParametroDeEntradaInvalido()
+        {
+            _iMendesServico = RetornarInstanciaObjetoIMendesServicoComCredenciaisValidas();
+
+            TributosRetorno retornoIMendes = _iMendesServico.PesquisarTributos(_tributosRequisicaoMoks.RetornarInstanciaTributosRetornoInvalida());
+
+            Assert.IsTrue(retornoIMendes.ErroRetorno == true);
         }
     }
 }

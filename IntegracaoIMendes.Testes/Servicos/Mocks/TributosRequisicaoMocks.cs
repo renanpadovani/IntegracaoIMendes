@@ -40,5 +40,11 @@ namespace IntegracaoIMendes.Testes.Servicos.Mocks
             return tributosRequisicao;
         }
 
+        public TributosRequisicao RetornarInstanciaTributosRetornoInvalida()
+        {
+            TributosRequisicao tributosRequisicao = new TributosRequisicao();
+
+            return tributosRequisicao;
+        }
     }
 }
