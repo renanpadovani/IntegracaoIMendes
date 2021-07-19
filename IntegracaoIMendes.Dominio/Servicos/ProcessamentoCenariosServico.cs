@@ -53,7 +53,6 @@ namespace IntegracaoIMendes.Dominio.Servicos
                 return;
             }
 
-
             foreach (Cenarios cenario in listaCenarios)
             {
                 if (cenario.DataHoraUltimoProcessamento.ToString("dd/MM/yyyy") == "01/01/1900" ||

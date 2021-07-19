@@ -52,8 +52,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
         {
             try
             {
-                Dominio.ContextoDados.InfastContextoDados _contexto = new Dominio.ContextoDados.InfastContextoDados(server, database, user, password);
-
                 ConexaoBDServico.SalvarCredenciais(server, database, user, password);
 
                 MessageBox.Show("Crendenciais de banco de dados salva com sucesso.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);

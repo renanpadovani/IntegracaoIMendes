@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.IO;
-using IntegracaoIMendes.Apresentacao.Entidades;
+using IntegracaoIMendes.Dominio.Entidades.Infast;
 
 namespace IntegracaoIMendes.Apresentacao.Servicos
 {

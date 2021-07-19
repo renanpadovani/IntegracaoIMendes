@@ -2,7 +2,6 @@
 using IntegracaoIMendes.Dominio.Enums;
 using IntegracaoIMendes.Dominio.Manipuladores;
 using IntegracaoIMendes.Dominio.Manipuladores.Infast;
-using IntegracaoIMendes.Dominio.Repositorios.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +10,17 @@ namespace IntegracaoIMendes.Dominio.Servicos
 {
     public class CenariosServico
     {
-        private readonly ICenariosRepositorio _cenarioRepositorio;
-        private readonly IProdutosRepositorio _produtoRepositorio;
-        private readonly IConfiguracoesRepositorio _configuracaoRepositorio;
+        private readonly ProdutosManipulador _produtosManipulador;
+        private readonly ConfiguracoesManipulador _configuracaoManipulador;
         private CenariosManipulador _cenarioManipulador;
 
-        public CenariosServico(ICenariosRepositorio cenarioRepositorio,
-                               IProdutosRepositorio produtoRepositorio,
-                               IConfiguracoesRepositorio configuracaoRepositorio)
+        public CenariosServico(ProdutosManipulador produtosManipulador,
+                               ConfiguracoesManipulador configuracaoManipulador,
+                               CenariosManipulador cenarioManipulador)
         {
-            _cenarioRepositorio = cenarioRepositorio;
-            _produtoRepositorio = produtoRepositorio;
-            _configuracaoRepositorio = configuracaoRepositorio;
-
-            _cenarioManipulador = new CenariosManipulador(_cenarioRepositorio);
+            _produtosManipulador = produtosManipulador;
+            _configuracaoManipulador = configuracaoManipulador;
+            _cenarioManipulador = cenarioManipulador;
         }
 
         public IEnumerable<Cenarios> CarregarListaCenarios()
@@ -85,16 +81,12 @@ namespace IntegracaoIMendes.Dominio.Servicos
 
         private Configuracoes CarregarConfiguracao()
         {
-            ConfiguracoesManipulador configuracaoManipulador = new ConfiguracoesManipulador(_configuracaoRepositorio);
-
-            return configuracaoManipulador.CarregarConfiguracao();
+            return _configuracaoManipulador.CarregarConfiguracao();
         }
 
         private List<Produtos> CarregarProdutos()
         {
-            ProdutosManipulador produtosManipulador = new ProdutosManipulador(_produtoRepositorio);
-
-            return produtosManipulador.PesquisarProdutos().ToList();
+            return _produtosManipulador.PesquisarProdutos().ToList();
         }
 
         public void InativarCenario(Int64 Id)

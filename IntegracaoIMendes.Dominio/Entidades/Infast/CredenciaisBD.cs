@@ -1,4 +1,4 @@
-﻿namespace IntegracaoIMendes.Apresentacao.Entidades
+﻿namespace IntegracaoIMendes.Dominio.Entidades.Infast
 {
     public class CredenciaisBD
     {

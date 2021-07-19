@@ -3,6 +3,7 @@ using IntegracaoIMendes.Dominio.Entidades.Infast;
 using IntegracaoIMendes.Dominio.Enums;
 using IntegracaoIMendes.Dominio.Manipuladores.Infast;
 using IntegracaoIMendes.Dominio.Repositorios;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -11,17 +12,13 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 {
     public partial class configuracoesForm : Form
     {
-        Dominio.ContextoDados.InfastContextoDados _contexto;
         ConfiguracoesManipulador _configManipulador;
 
-        public configuracoesForm(Dominio.ContextoDados.InfastContextoDados contexto)
+        public configuracoesForm()
         {
             InitializeComponent();
 
-            _contexto = contexto;
-
-            ConfiguracoesRepositorio repositorio = new ConfiguracoesRepositorio(_contexto);
-            _configManipulador = new Dominio.Manipuladores.Infast.ConfiguracoesManipulador(repositorio);
+            _configManipulador = Fabrica.container.GetRequiredService<ConfiguracoesManipulador>();
         }
 
         private void configuracoesForm_Load(object sender, EventArgs e)

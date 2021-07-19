@@ -1,8 +1,7 @@
 ﻿using IntegracaoIMendes.Apresentacao.Entitidades;
-using IntegracaoIMendes.Dominio.ContextoDados;
 using IntegracaoIMendes.Dominio.Enums;
-using IntegracaoIMendes.Dominio.Repositorios;
 using IntegracaoIMendes.Dominio.Servicos;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -11,20 +10,13 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 {
     public partial class cenariosTributariosForm : Form
     {
-        InfastContextoDados _contexto;
         CenariosServico _cenarioServico;
 
-        public cenariosTributariosForm(InfastContextoDados contexto)
+        public cenariosTributariosForm()
         {
             InitializeComponent();
 
-            _contexto = contexto;
-
-            CenariosRepositorio cenarioRepositorio = new CenariosRepositorio(_contexto);
-            ProdutosRepositorio produtosRepositorio = new ProdutosRepositorio(_contexto);
-            ConfiguracoesRepositorio configRepositorio = new ConfiguracoesRepositorio(_contexto);
-
-            _cenarioServico = new CenariosServico(cenarioRepositorio, produtosRepositorio, configRepositorio);
+            _cenarioServico = Fabrica.container.GetRequiredService<CenariosServico>(); 
         }
 
         private void configuracaoCenariosForm_Load(object sender, EventArgs e)
