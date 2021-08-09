@@ -12,7 +12,7 @@ namespace IntegracaoIMendes.Dominio.Entidades.Infast
         public string UF { get; set; }
         public string CFOP { get; set; }
         public string CodigoCaracteristicaTributaria { get; set; }
-        public Int16 Finalidade { get; set; }
+        public string Finalidade { get; set; }
         public string CfopInterno { get; set; }
         public string CfopInterestadual { get; set; }
         public string Cst { get; set; }

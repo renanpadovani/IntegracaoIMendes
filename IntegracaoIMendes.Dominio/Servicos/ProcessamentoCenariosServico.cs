@@ -56,7 +56,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
             foreach (Cenarios cenario in listaCenarios)
             {
                 if (cenario.DataHoraUltimoProcessamento.ToString("dd/MM/yyyy") == "01/01/1900" ||
-                    DateTime.Compare(System.DateTime.Now, cenario.DataHoraUltimoProcessamento) > cenario.IntervaloDeBuscaEmDias)
+                    (int)System.DateTime.Now.Subtract(cenario.DataHoraUltimoProcessamento).TotalDays > cenario.IntervaloDeBuscaEmDias)
                 {
                     Int64 numeroRequicoesEstimadas = RetornarNumeroRequisicoesIMendesEstimadasParaProcessamentoCenario(cenario, listaProdutos);
                     Int64 numeroRequisicoesDisponiveis = (_configuracao.QtdRequisicoesDiarias - RetornarNumeroRequisicoesRealizadasIMendes(System.DateTime.Now));
@@ -183,7 +183,7 @@ namespace IntegracaoIMendes.Dominio.Servicos
             {
                 //Grava os produtos no Infast
                 TributacoesInfastManipulador tributacaoInfastManipulador = new TributacoesInfastManipulador(_repositorioTributacoes);
-                tributacaoInfastManipulador.GravarTributos(cenario.ID, tribRet, listaProdutos);
+                tributacaoInfastManipulador.GravarTributos(cenario, tribRet, listaProdutos);
             }
             else
             {

@@ -16,24 +16,24 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
             _repositorio = repositorio;
         }
 
-        public void GravarTributos(Int64 CenarioTributarioID, TributosRetorno tribIMendes, List<Produtos> listaProdutos)
+        public void GravarTributos(Cenarios cenario, TributosRetorno tribIMendes, List<Produtos> listaProdutos)
         {
             _listaProdutos = listaProdutos;
 
-            TributacaoCabecalho tributacaoInfast = CriarObjetoTributacao(CenarioTributarioID, tribIMendes);
+            TributacaoCabecalho tributacaoInfast = CriarObjetoTributacao(cenario, tribIMendes);
 
-            tributacaoInfast.semRetorno = CriaObjetoItensSemRetorno(CenarioTributarioID, tribIMendes);
+            tributacaoInfast.semRetorno = CriaObjetoItensSemRetorno(cenario, tribIMendes);
 
             _repositorio.IncluirTributacao(tributacaoInfast);
         }
 
-        private TributacaoCabecalho CriarObjetoTributacao(Int64 CenarioTributarioID, TributosRetorno tribIMendes)
+        private TributacaoCabecalho CriarObjetoTributacao(Cenarios cenario, TributosRetorno tribIMendes)
         {
             TributacaoCabecalho tribCab = new TributacaoCabecalho();
 
             tribCab.EmpresaID = 1;
             tribCab.FilialID = 1;
-            tribCab.CenarioTributarioID = CenarioTributarioID;
+            tribCab.CenarioTributarioID = cenario.ID;
             tribCab.Ambiente = tribIMendes.Cabecalho.amb.ToString();
             tribCab.CnpjCliente = tribIMendes.Cabecalho.cnpj;
             tribCab.DataHoraRetorno = tribIMendes.Cabecalho.dthr;
@@ -43,12 +43,12 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
             tribCab.NumeroTransacaoIMendes = long.Parse(tribIMendes.Cabecalho.transacao);
             tribCab.MensagemServidor = tribIMendes.Cabecalho.mensagem;
 
-            tribCab.grupos = CriarGrupoProduto(tribIMendes);
+            tribCab.grupos = CriarGrupoProduto(cenario, tribIMendes);
 
             return tribCab;
         }
 
-        private List<TributacaoProdutoGrupo> CriarGrupoProduto(TributosRetorno tribIMendes)
+        private List<TributacaoProdutoGrupo> CriarGrupoProduto(Cenarios cenario, TributosRetorno tribIMendes)
         {
             List<TributacaoProdutoGrupo> grupos = new List<TributacaoProdutoGrupo>();
 
@@ -113,7 +113,7 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
                         grupoLista.UF = uf.uF;
                         grupoLista.CFOP = caracteristica.cFOP;
                         grupoLista.CodigoCaracteristicaTributaria = caracteristica.codigo;
-                        grupoLista.Finalidade = short.Parse(caracteristica.finalidade);
+                        grupoLista.Finalidade = caracteristica.finalidade;
                         grupoLista.CfopInterno = caracteristica.cFOP;
                         grupoLista.CfopInterestadual = caracteristica.cFOP;
                         grupoLista.Cst = caracteristica.cST;
@@ -141,7 +141,8 @@ namespace IntegracaoIMendes.Dominio.Manipuladores
             return lista;
         }
 
-        private List<TributacaoProdutoSemRetorno> CriaObjetoItensSemRetorno(Int64 CenarioTributarioID, TributosRetorno tribIMendes)
+        //TODO: Implementar gravação dos registros sem retorno
+        private List<TributacaoProdutoSemRetorno> CriaObjetoItensSemRetorno(Cenarios cenario, TributosRetorno tribIMendes)
         {
             List<TributacaoProdutoSemRetorno> itensSemRetorno = new List<TributacaoProdutoSemRetorno>();
 
