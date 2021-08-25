@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0A201930-8EE6-4052-A6B0-C49897315D2A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IntegracaoIMendes.Dominio</RootNamespace>
+    <AssemblyName>IntegracaoIMendes.Dominio</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.12.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.12.0\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Contexto\InfastContextoDados.cs" />
+    <Compile Include="Entidades\IMendes\TributosRequisicao.cs" />
+    <Compile Include="Entidades\IMendes\TributosRetorno.cs" />
+    <Compile Include="Entidades\Infast\Cenarios.cs" />
+    <Compile Include="Entidades\Infast\Configuracoes.cs" />
+    <Compile Include="Entidades\Infast\CredenciaisBD.cs" />
+    <Compile Include="Entidades\Infast\Entidade.cs" />
+    <Compile Include="Entidades\Infast\ProcessamentoCenarios.cs" />
+    <Compile Include="Entidades\Infast\Produtos.cs" />
+    <Compile Include="Entidades\Infast\TributacaoCabecalho.cs" />
+    <Compile Include="Entidades\Infast\TributacaoProdutoGrupo.cs" />
+    <Compile Include="Entidades\Infast\TributacaoProdutoGrupoLista.cs" />
+    <Compile Include="Entidades\Infast\TributacaoProdutoSemRetorno.cs" />
+    <Compile Include="Enums\EAmbiente.cs" />
+    <Compile Include="Enums\ECaracteristicaTributaria.cs" />
+    <Compile Include="Enums\ECodRegimeTributario.cs" />
+    <Compile Include="Enums\EDestinacaoMercadoria.cs" />
+    <Compile Include="Enums\EFinalidade.cs" />
+    <Compile Include="Manipuladores\IMendes\TributacaoIMendesManipulador.cs" />
+    <Compile Include="Manipuladores\Infast\CenariosManipulador.cs" />
+    <Compile Include="Manipuladores\Infast\ConfiguracoesManipulador.cs" />
+    <Compile Include="Manipuladores\Infast\ProcessamentoCenariosManipulador.cs" />
+    <Compile Include="Manipuladores\Infast\ProdutosManipulador.cs" />
+    <Compile Include="Manipuladores\Infast\TributacoesInfastManipulador.cs" />
+    <Compile Include="Mapeamentos\CenariosMapeamento.cs" />
+    <Compile Include="Mapeamentos\EnumCaracteristicasTributariasMapeamento.cs" />
+    <Compile Include="Mapeamentos\EnumFinalidadesMapeamento.cs" />
+    <Compile Include="Mapeamentos\ProcessamentoCenariosMapeamento.cs" />
+    <Compile Include="Mapeamentos\UFsMapeamento.cs" />
+    <Compile Include="Modelos\CenariosModelo.cs" />
+    <Compile Include="Modelos\ProcessamentoCenariosModelo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositorios\CenariosRepositorio.cs" />
+    <Compile Include="Repositorios\ConfiguracoesRepositorio.cs" />
+    <Compile Include="Repositorios\Interfaces\ICenariosRepositorio.cs" />
+    <Compile Include="Repositorios\Interfaces\IConfiguracoesRepositorio.cs" />
+    <Compile Include="Repositorios\Interfaces\IProcessamentoCenariosRepositorio.cs" />
+    <Compile Include="Repositorios\Interfaces\IProdutosRepositorio.cs" />
+    <Compile Include="Repositorios\Interfaces\ITributacoesRepositorio.cs" />
+    <Compile Include="Repositorios\ProcessamentoCenariosRepositorio.cs" />
+    <Compile Include="Repositorios\ProdutosRepositorio.cs" />
+    <Compile Include="Repositorios\TributacoesRepositorio.cs" />
+    <Compile Include="Servicos\CalculoRequisicoesIMendesServico.cs" />
+    <Compile Include="Servicos\CenariosServico.cs" />
+    <Compile Include="Servicos\IMendesServico.cs" />
+    <Compile Include="Servicos\ProcessamentoCenariosServico.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

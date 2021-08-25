@@ -115,6 +115,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Controls.Add(this.incluirCenariobutton);
             this.groupBox1.Controls.Add(this.removerCenariobutton);
@@ -122,7 +123,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(760, 288);
+            this.groupBox1.Size = new System.Drawing.Size(760, 303);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Incluir Novo Cenário";
@@ -133,9 +134,9 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.groupBox5.Controls.Add(this.tipoDeProdutoscomboBox);
             this.groupBox5.Controls.Add(this.label9);
             this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Location = new System.Drawing.Point(414, 22);
+            this.groupBox5.Location = new System.Drawing.Point(414, 42);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(330, 65);
+            this.groupBox5.Size = new System.Drawing.Size(340, 65);
             this.groupBox5.TabIndex = 19;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Parâmetros de Busca";
@@ -197,7 +198,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             // incluirCenariobutton
             // 
-            this.incluirCenariobutton.Location = new System.Drawing.Point(637, 174);
+            this.incluirCenariobutton.Location = new System.Drawing.Point(640, 238);
             this.incluirCenariobutton.Name = "incluirCenariobutton";
             this.incluirCenariobutton.Size = new System.Drawing.Size(107, 23);
             this.incluirCenariobutton.TabIndex = 15;
@@ -207,7 +208,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             // removerCenariobutton
             // 
-            this.removerCenariobutton.Location = new System.Drawing.Point(637, 203);
+            this.removerCenariobutton.Location = new System.Drawing.Point(640, 267);
             this.removerCenariobutton.Name = "removerCenariobutton";
             this.removerCenariobutton.Size = new System.Drawing.Size(107, 23);
             this.removerCenariobutton.TabIndex = 16;
@@ -217,7 +218,6 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Controls.Add(this.caracteristicasTributariasDestinocheckedListBox);
             this.groupBox4.Controls.Add(this.cfopDestinocomboBox);
@@ -226,9 +226,9 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.ufDestinocheckedListBox);
-            this.groupBox4.Location = new System.Drawing.Point(6, 90);
+            this.groupBox4.Location = new System.Drawing.Point(6, 107);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(625, 188);
+            this.groupBox4.Size = new System.Drawing.Size(625, 189);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Dados do Destinatário";
@@ -237,16 +237,17 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             this.label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.label8.Location = new System.Drawing.Point(135, 37);
+            this.label8.Location = new System.Drawing.Point(6, 19);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(478, 23);
+            this.label8.Size = new System.Drawing.Size(748, 16);
             this.label8.TabIndex = 15;
             this.label8.Text = "Nossa sugestão é de 5 UF’s, um CFOP e uma característica tributária por cenário";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 66);
+            this.label4.Location = new System.Drawing.Point(6, 70);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(143, 15);
             this.label4.TabIndex = 7;
@@ -255,7 +256,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // caracteristicasTributariasDestinocheckedListBox
             // 
             this.caracteristicasTributariasDestinocheckedListBox.FormattingEnabled = true;
-            this.caracteristicasTributariasDestinocheckedListBox.Location = new System.Drawing.Point(6, 84);
+            this.caracteristicasTributariasDestinocheckedListBox.Location = new System.Drawing.Point(6, 88);
             this.caracteristicasTributariasDestinocheckedListBox.Name = "caracteristicasTributariasDestinocheckedListBox";
             this.caracteristicasTributariasDestinocheckedListBox.Size = new System.Drawing.Size(300, 94);
             this.caracteristicasTributariasDestinocheckedListBox.TabIndex = 6;
@@ -264,23 +265,15 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // 
             this.cfopDestinocomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cfopDestinocomboBox.FormattingEnabled = true;
-            this.cfopDestinocomboBox.Items.AddRange(new object[] {
-            "5101",
-            "5102",
-            "5405",
-            "6101",
-            "6102",
-            "6403",
-            "6404"});
-            this.cfopDestinocomboBox.Location = new System.Drawing.Point(6, 37);
+            this.cfopDestinocomboBox.Location = new System.Drawing.Point(6, 41);
             this.cfopDestinocomboBox.Name = "cfopDestinocomboBox";
-            this.cfopDestinocomboBox.Size = new System.Drawing.Size(91, 23);
+            this.cfopDestinocomboBox.Size = new System.Drawing.Size(607, 23);
             this.cfopDestinocomboBox.TabIndex = 14;
             // 
             // finalidadeDestinacaocheckedListBox
             // 
             this.finalidadeDestinacaocheckedListBox.FormattingEnabled = true;
-            this.finalidadeDestinacaocheckedListBox.Location = new System.Drawing.Point(312, 84);
+            this.finalidadeDestinacaocheckedListBox.Location = new System.Drawing.Point(312, 88);
             this.finalidadeDestinacaocheckedListBox.Name = "finalidadeDestinacaocheckedListBox";
             this.finalidadeDestinacaocheckedListBox.Size = new System.Drawing.Size(172, 94);
             this.finalidadeDestinacaocheckedListBox.TabIndex = 8;
@@ -288,16 +281,17 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 19);
+            this.label7.Location = new System.Drawing.Point(6, 23);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(91, 15);
+            this.label7.Size = new System.Drawing.Size(611, 15);
             this.label7.TabIndex = 13;
-            this.label7.Text = "CFOP (Destino):";
+            this.label7.Text = "CFOP Destino (Deve-se criar uma figura fiscal com mesmo CFOP do cenário para que " +
+    "o sistema faça a associação):";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(312, 66);
+            this.label5.Location = new System.Drawing.Point(312, 70);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(133, 15);
             this.label5.TabIndex = 9;
@@ -306,7 +300,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(490, 66);
+            this.label6.Location = new System.Drawing.Point(490, 70);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(75, 15);
             this.label6.TabIndex = 11;
@@ -315,7 +309,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             // ufDestinocheckedListBox
             // 
             this.ufDestinocheckedListBox.FormattingEnabled = true;
-            this.ufDestinocheckedListBox.Location = new System.Drawing.Point(490, 84);
+            this.ufDestinocheckedListBox.Location = new System.Drawing.Point(490, 88);
             this.ufDestinocheckedListBox.Name = "ufDestinocheckedListBox";
             this.ufDestinocheckedListBox.Size = new System.Drawing.Size(123, 94);
             this.ufDestinocheckedListBox.TabIndex = 10;
@@ -328,7 +322,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.tipoRegimecomboBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 22);
+            this.groupBox3.Location = new System.Drawing.Point(6, 42);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(402, 65);
             this.groupBox3.TabIndex = 17;
@@ -377,9 +371,9 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.cenariosdataGridView);
-            this.groupBox2.Location = new System.Drawing.Point(12, 306);
+            this.groupBox2.Location = new System.Drawing.Point(12, 321);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(760, 243);
+            this.groupBox2.Size = new System.Drawing.Size(760, 228);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cenários Configurados";
@@ -396,7 +390,7 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             this.cenariosdataGridView.ReadOnly = true;
             this.cenariosdataGridView.RowTemplate.Height = 25;
             this.cenariosdataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.cenariosdataGridView.Size = new System.Drawing.Size(748, 215);
+            this.cenariosdataGridView.Size = new System.Drawing.Size(748, 200);
             this.cenariosdataGridView.TabIndex = 0;
             // 
             // cenariosTributariosForm

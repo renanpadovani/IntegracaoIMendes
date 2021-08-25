@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Apresentacao", "IntegracaoIMendes.Apresentacao\IntegracaoIMendes.Apresentacao.csproj", "{59E7FF9C-BB2D-4E34-A49F-2FEF1B3CE987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegracaoIMendes.Dominio", "IntegracaoIMendes.Dominio\IntegracaoIMendes.Dominio.csproj", "{2D5338E7-D9CA-4F19-A909-1537EA507303}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Dominio", "IntegracaoIMendes.Dominio\IntegracaoIMendes.Dominio.csproj", "{2D5338E7-D9CA-4F19-A909-1537EA507303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegracaoIMendes.Testes", "IntegracaoIMendes.Testes\IntegracaoIMendes.Testes.csproj", "{6DB9D585-D8E7-4AC1-B76E-DD61D4B91E2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegracaoIMendes.Testes", "IntegracaoIMendes.Testes\IntegracaoIMendes.Testes.csproj", "{6DB9D585-D8E7-4AC1-B76E-DD61D4B91E2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

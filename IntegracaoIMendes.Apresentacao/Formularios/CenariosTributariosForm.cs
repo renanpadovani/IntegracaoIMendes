@@ -25,6 +25,8 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
 
             CarregarComboTipoRegimeNormal();
 
+            CarregarComboCfop();
+
             CarregarListBoxCaracteristicasTributarias();
 
             CarregarListBoxFinalidades();
@@ -57,6 +59,28 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
             tipoRegimecomboBox.DataSource = listaRegimesTributarios;
             tipoRegimecomboBox.DisplayMember = "Descricao";
             tipoRegimecomboBox.ValueMember = "ID";
+        }
+
+        private void CarregarComboCfop()
+        {
+            List<ChaveValor> listaCfops = new List<ChaveValor>();
+
+            listaCfops.Add(new ChaveValor { ID = "1101", Descricao = "1101 - Compra para industrialização" });
+            listaCfops.Add(new ChaveValor { ID = "1102", Descricao = "1102 - Compra para comercialização" });
+            listaCfops.Add(new ChaveValor { ID = "1202", Descricao = "1202 - Devolução de venda de mercadoria adquirida ou recebida de terceiros" });
+            listaCfops.Add(new ChaveValor { ID = "5101", Descricao = "5101 - Venda de mercadorias industrializadas" });
+            listaCfops.Add(new ChaveValor { ID = "5102", Descricao = "5102 - Revenda de mercadorias" });
+            listaCfops.Add(new ChaveValor { ID = "5124", Descricao = "5124 - Industrialização efetuada para outra empresa" });
+            listaCfops.Add(new ChaveValor { ID = "5202", Descricao = "5202 - Devolução de compra para comercialização" });
+            listaCfops.Add(new ChaveValor { ID = "5902", Descricao = "5902 - Retorno de mercadoria utilizada na industrialização por encomenda" });
+            listaCfops.Add(new ChaveValor { ID = "5910", Descricao = "5910 - Remessa em bonificação, doação ou brinde" });
+            listaCfops.Add(new ChaveValor { ID = "5915", Descricao = "5915 - Remessa de mercadoria ou bem para conserto ou reparo" });
+            listaCfops.Add(new ChaveValor { ID = "5949", Descricao = "5949 - Simples Remessa" });
+            
+
+            cfopDestinocomboBox.DataSource = listaCfops;
+            cfopDestinocomboBox.DisplayMember = "Descricao";
+            cfopDestinocomboBox.ValueMember = "ID";
         }
 
         private void CarregarListBoxCaracteristicasTributarias()
@@ -158,13 +182,13 @@ namespace IntegracaoIMendes.Apresentacao.Formularios
                     tipoRegimeNormal = tipoRegimecomboBox.SelectedValue.ToString();
 
 
-                if (cfopDestinocomboBox.Text.Trim().Length == 0)
+                if (cfopDestinocomboBox.SelectedValue == null)
                 {
                     MessageBox.Show("Atenção: CFOP de destino não informado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
                 else
-                    cfopDestino = cfopDestinocomboBox.Text;
+                    cfopDestino = cfopDestinocomboBox.SelectedValue.ToString();
 
                 if (caracteristicasTributariasDestinocheckedListBox.CheckedItems.Count == 0)
                 {
